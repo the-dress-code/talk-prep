@@ -162,3 +162,16 @@ github.com/the-dress-code/talk-prep. sprint_log.md added to project.
 
 ## Open questions
 *(add anything unresolved here)*
+
+## Before Day 2
+- [ ] Create talk_prep Mix project locally: `mix new talk_prep --sup`
+- [ ] Push to github.com/the-dress-code/talk-prep
+- [ ] Add sprint_log.md to the project and commit it
+
+## Real deadline context
+The first real use of talk_prep is the Dutch Clojure Days talk,
+May 8, Amsterdam. Talk title: "Clojure as Your First Language:
+Shaping a Functional Mindset". This is a 45-minute talk for a
+beginner-friendly audience. Details still forthcoming from the
+conference. The tool needs to be useful enough to actually help
+with this talk before May 8.
