@@ -9,9 +9,14 @@ full context and resume the sprint exactly where you left off.
 ## Session conventions
 - At the start of each day's session, generate a printable day checklist
   in the same format as the Day 1 checklist (goal, bullet steps, stretch goal).
-- Base the checklist on the sprint outline and any notes from the previous day's log.
-- Checklists are saved as markdown files in `checklists/day_N_checklist.md` and
-  committed to the repo so they persist for later review.
+- Follow the style of the Day 1 checklist — short goal line, plain bullet steps,
+  one stretch goal, brief closing note. Clear and concise, no headers or sub-sections.
+- Save the checklist as a markdown file in `checklists/day_N_checklist.md` and
+  commit it to the repo.
+- Also display the checklist in the chat message so it can be copied directly
+  into Google Docs. Add a timestamp at the bottom of the md file (below a
+  horizontal rule) in the format: *Generated: YYYY-MM-DD* — keep it out of
+  the main checklist body.
 
 ---
 
@@ -191,12 +196,34 @@ AGENTS.md needs stronger verification language before Day 3.
 
 ---
 
-### Day 3
-**Goal:**
+### Day 3 ✅
+**Goal:** Build the instinct for context — too little, too much, just right
 **Completed:**
+- Ran no-context experiment: agent found correct file location without AGENTS.md
+  but immediately reached for mix.exs
+- Ran too-little-context experiment: same mix.exs failure, confirming constraint
+  was doing real work
+- Ran too-much-context experiment: bloated AGENTS.md buried constraints, same
+  failures as no-context
+- Strengthened verification contract language in AGENTS.md
+- Trimmed AGENTS.md to minimum effective version — cut "Where things live"
+  (repo-map handles it) and git conventions (agent ignores them)
+
 **Key decisions:**
+- Hard constraints and "done" moved to top of AGENTS.md — most important signal
+  should hit the agent first
+- "Where things live" section removed — repo-map makes it redundant
+
 **Lessons learned:**
-**Left off at:**
+- Constraint visibility matters more than constraint presence
+- The repo-map gives the agent enough structural context to land files correctly
+  without explicit guidance
+- The agent reached for mix.exs in every condition — prominence of the constraint
+  matters, not just its presence
+- Bloated AGENTS.md performed no better than empty AGENTS.md
+
+**Left off at:** AGENTS.md trimmed and committed. Verification contract still
+untested — will confirm on Day 4 when we build the real braindump processor.
 
 ---
 
