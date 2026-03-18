@@ -22,3 +22,14 @@ erl_crash.dump
 # Ignore package tarball (built via "mix hex.build").
 talk_prep-*.tar
 
+# Environment variables and secrets
+.env
+.env.*
+*.secret.exs
+
+# macOS
+.DS_Store
+
+# Editor
+.cursor/
+.vscode/
