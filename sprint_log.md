@@ -6,6 +6,15 @@ full context and resume the sprint exactly where you left off.
 
 ---
 
+## Session conventions
+- At the start of each day's session, generate a printable day checklist
+  in the same format as the Day 1 checklist (goal, bullet steps, stretch goal).
+- Base the checklist on the sprint outline and any notes from the previous day's log.
+- Checklists are saved as markdown files in `checklists/day_N_checklist.md` and
+  committed to the repo so they persist for later review.
+
+---
+
 ## Who I am
 - Functional developer, 2 years experience, stronger in Elixir than Clojure
 - Learning agentic engineering, targeting Level 6 per Bassim Eledath's framework
@@ -162,11 +171,6 @@ github.com/the-dress-code/talk-prep. sprint_log.md added to project.
 
 ## Open questions
 *(add anything unresolved here)*
-
-## Before Day 2
-- [ ] Create talk_prep Mix project locally: `mix new talk_prep --sup`
-- [ ] Push to github.com/the-dress-code/talk-prep
-- [ ] Add sprint_log.md to the project and commit it
 
 ## Real deadline context
 The first real use of talk_prep is the Dutch Clojure Days talk,
