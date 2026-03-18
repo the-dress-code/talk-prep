@@ -160,8 +160,39 @@ github.com/the-dress-code/talk-prep. sprint_log.md added to project.
 
 ---
 
-### Day 2
+### Day 2 ✅
 **Goal:** Write AGENTS.md, feel the difference context makes
+**Completed:**
+- Updated .gitignore (secrets, macOS, editor, aider entries)
+- Created AGENTS.md with constraints, stack, done criteria, and file map
+- Created checklists/ folder, added Day 1 and Day 2 checklists
+- Ran Aider experiment: asked for a placeholder braindump processor module
+- Observed agent behavior with AGENTS.md in context
+
+**Key decisions:**
+- Checklists stored as markdown in checklists/ and committed to repo
+- Session conventions section added to sprint_log.md so future sessions
+  auto-generate the day's checklist
+
+**Lessons learned:**
+- Location constraints in AGENTS.md held — module landed in the right place
+- "Done means compile + test" constraint was ignored — agent committed without
+  running either command; constraint needs stronger wording
+- Dependency constraint partially failed — agent proposed adding jido and
+  req_llm twice despite being told not to add deps without being asked
+- mix compile can be run in a second terminal tab while Aider stays open
+- Saying N to mix.exs edits twice was enough — agent backed off cleanly
+
+**Stretch goal deferred:** Running the same task without AGENTS.md in context
+carried forward to Day 3 as the opening experiment.
+
+**Left off at:** braindump_processor.ex committed and compiling cleanly.
+AGENTS.md needs stronger verification language before Day 3.
+
+---
+
+### Day 3
+**Goal:**
 **Completed:**
 **Key decisions:**
 **Lessons learned:**

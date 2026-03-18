@@ -33,3 +33,4 @@ talk_prep-*.tar
 # Editor
 .cursor/
 .vscode/
+.aider*
