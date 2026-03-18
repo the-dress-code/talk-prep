@@ -19,13 +19,12 @@ ever leaves the machine.
   suggesting a new library.
 
 ## What "done" means
-A task is done when:
-1. `mix compile` produces no errors or warnings
-2. `mix test` passes
-3. The change is committed with a clear message
+Before committing anything, you must run these commands in order:
+1. `mix compile` — fix all errors and warnings before proceeding
+2. `mix test` — fix all failures before proceeding
+3. Only after both pass: commit with a clear message
 
-Do not declare a task complete until you have run both commands and
-confirmed they pass.
+If you cannot run these commands, stop and say so. Do not commit unverified code.
 
 ## Where things live
 - `lib/talk_prep/` — application modules
