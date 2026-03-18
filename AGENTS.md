@@ -1,16 +1,9 @@
 # AGENTS.md
 
-## What this project is
-talk_prep is a private, local CLI tool for conference talk preparation.
-It ingests braindump writing and organizes ideas into a structured talk
-outline. All processing happens on-device using a local LLM — no content
-ever leaves the machine.
-
-## Stack
-- Elixir / Mix / OTP
-- Jido ~> 2.0 (action pipeline)
-- req_llm ~> 1.5 (LLM HTTP client)
-- Qwen qwen2.5-coder:14b via Ollama (local model, http://localhost:11434)
+### What this project is
+talk_prep is a private, local CLI tool that ingests braindump writing and
+organizes ideas into a structured talk outline. All LLM processing happens
+on-device via Ollama — no content ever leaves the machine.
 
 ## Hard constraints
 - NEVER make HTTP calls to external APIs. All LLM calls go to Ollama at
@@ -26,9 +19,8 @@ Before committing anything, you must run these commands in order:
 
 If you cannot run these commands, stop and say so. Do not commit unverified code.
 
-## Where things live
-- `lib/talk_prep/` — application modules
-- `test/` — ExUnit tests
-- `AGENTS.md` — this file; your orientation document
-- `sprint_log.md` — sprint context for the human; do not modify
-- `checklists/` — daily sprint checklists; do not modify
+## Stack
+- Elixir / Mix / OTP
+- Jido ~> 2.0 (action pipeline)
+- req_llm ~> 1.5 (LLM HTTP client)
+- Qwen qwen2.5-coder:14b via Ollama (local model, http://localhost:11434)
