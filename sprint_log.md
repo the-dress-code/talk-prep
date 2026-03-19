@@ -29,8 +29,8 @@ full context and resume the sprint exactly where you left off.
 
 ## The project: talk_prep
 A private, local CLI tool that ingests braindump writing and extracts, organizes,
-and maps ideas into a structured talk outline using Jido Actions and a local Qwen
-model. Runs entirely locally for privacy — braindumps never leave the machine.
+and maps ideas into a structured talk outline using a local Qwen model.
+Runs entirely locally for privacy — braindumps never leave the machine.
 
 **Repo:** github.com/the-dress-code/talk-prep
 **Local path:** ~/Projects/talk_prep
@@ -42,16 +42,26 @@ model. Runs entirely locally for privacy — braindumps never leave the machine.
 - Qwen qwen2.5-coder:14b — local LLM, free, private
 - Aider 0.86.2 — agent CLI, installed via pipx with Python 3.12
 - Elixir / Mix / OTP
-- Jido ~> 2.0
-- req_llm ~> 1.5
+- req_llm ~> 1.7 (in deps, wired up and working)
 - OLLAMA_API_BASE=http://localhost:11434 (set in ~/.zshrc)
 
 **To start a session:**
 ```bash
 ollama serve        # if not already running as a service
 cd ~/Projects/talk_prep
-aider --model ollama/qwen2.5-coder:14b
+aider --model ollama/qwen2.5-coder:14b --no-auto-commits
 ```
+
+**Two terminal tabs:**
+- Tab 1 — Aider (interactive, stays open)
+- Tab 2 — mix commands (mix compile, mix test)
+
+**Practical workflow (current stage):**
+- Aider writes code, does not commit
+- You run `mix compile` and `mix test` in Tab 2 to verify
+- You commit manually when both pass
+- This is correct Level 3/4 behavior — you are the verifier
+- Aider self-verification comes at Level 6 (Day 13+)
 
 ---
 
@@ -98,10 +108,10 @@ criteria matter more than the day count.*
 ### Week 1 — Environment & Level 3 (Context Engineering)
 - Day 1  ✅  Get Ollama + Qwen running locally, Aider installed and talking to
             Qwen, make one real change to a project (Ollama, Qwen, Aider)
-- Day 2      Write first AGENTS.md for talk_prep, feel the difference it makes
-- Day 3      Experiment with context — too little, too much, just right — build
+- Day 2  ✅  Write first AGENTS.md for talk_prep, feel the difference it makes
+- Day 3  ✅  Experiment with context — too little, too much, just right — build
             the instinct
-- Day 4      Build talk_prep core — ingest a braindump file using Aider with
+- Day 4  ✅  Build talk_prep core — ingest a braindump file using Aider with
             good context
 - Day 5      Consolidate — clean up AGENTS.md, clean git history, Level 3
             checkpoint
@@ -227,8 +237,54 @@ untested — will confirm on Day 4 when we build the real braindump processor.
 
 ---
 
+### Day 4 ✅
+**Goal:** Build a real braindump ingestion pipeline
+**Completed:**
+- Audited actual codebase — discovered sprint log tool stack was aspirational,
+  not real (Jido was never in deps; req_llm was listed but not installed)
+- Removed placeholder_braindump_processor.ex (Aider-generated, never wired up)
+- Added req_llm ~> 1.7 to mix.exs manually, ran mix deps.get, confirmed clean compile
+- Implemented BraindumpProcessor.process/1 via Aider with AGENTS.md in context
+- Fixed several issues manually after Aider committed: api_key required by
+  req_llm even for Ollama (pass `api_key: "ollama"`), response extraction
+  via ReqLLM.Response.text/1, JSON fence stripping, and explicit prompt structure
+- Added test/fixtures/sample_braindump.txt with real talk content
+- Wrote ExUnit test asserting output shape — all 3 tests passing
+
+**Key decisions:**
+- Jido removed from project description — not in deps, not planned for near term
+- req_llm calls Ollama via `:openai` provider with custom base_url — this is
+  correct; Ollama exposes an OpenAI-compatible API
+- Output shape agreed: `%{raw, themes, claims, summary}` where claims are
+  `%{claim: "...", support: [...]}`
+- Draft Aider prompts in chat before running — prevents vague prompts that
+  produce wrong output shapes
+
+**Lessons learned:**
+- Aider auto-commits by default and ignores "do not commit" instructions —
+  use `--no-auto-commits` flag to disable this; human verifies and commits manually
+- req_llm requires an api_key even for local Ollama — pass `api_key: "ollama"`
+- Use ReqLLM.Response.text/1 to extract text from a response (not response.message.content)
+- Qwen will invent its own JSON schema if not given an explicit one — always
+  specify the exact structure and say "return ONLY the JSON object, no markdown"
+- The sprint log tool stack must reflect reality, not intent — verify against
+  mix.exs before trusting it
+
+**Open / unverified:**
+- BraindumpProcessor.process/1 test passes but return value has not been
+  manually inspected — we have not confirmed that `raw`, `themes`, `claims`,
+  and `summary` are actually populated correctly in practice. Day 5 should
+  include a manual verification step (e.g. run process/1 in iex and inspect
+  the output).
+
+**Left off at:** BraindumpProcessor.process/1 working and tested. Pipeline
+runs end to end: file path in, structured map out. Ready for Day 5 consolidation.
+
+---
+
 ## Open questions
-*(add anything unresolved here)*
+- Does the Qwen prompt reliably produce all four fields, or does it sometimes
+  omit one? Needs manual inspection in iex.
 
 ## Real deadline context
 The first real use of talk_prep is the Dutch Clojure Days talk,
