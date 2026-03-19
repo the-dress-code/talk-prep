@@ -3,6 +3,7 @@ defmodule TalkPrep.FileIngestor do
     case File.read(file_path) do
       {:ok, content} ->
         {:ok, content}
+
       {:error, reason} ->
         {:error, reason}
     end
@@ -14,6 +15,7 @@ defmodule TalkPrep.FileIngestor do
         IO.puts("Processing file: #{file_path}")
         # Placeholder implementation for processing file content
         :ok
+
       {:error, reason} ->
         IO.puts("Error reading file: #{file_path} - #{reason}")
         {:error, reason}
