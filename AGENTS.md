@@ -21,6 +21,5 @@ If you cannot run these commands, stop and say so. Do not commit unverified code
 
 ## Stack
 - Elixir / Mix / OTP
-- Jido ~> 2.0 (action pipeline)
-- req_llm ~> 1.5 (LLM HTTP client)
+- req_llm ~> 1.7 (LLM HTTP client)
 - Qwen qwen2.5-coder:14b via Ollama (local model, http://localhost:11434)

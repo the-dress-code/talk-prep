@@ -1,0 +1,33 @@
+some of my story:
+
+Clojure was the first programming language i took seriously and used to build things with - i found out later that my choice was unique
+
+listened to rich hickey  talks like hammock driven dev and stu halloway talks (which ones) before I knew what a repl was - do other languages have philosophical leaders with ideas that go beyond their languages? i basically joined a cult, right?
+
+a combination of things kept things more straightforward in a whole that was getting deeper and more vast the longer I stayed with it
+
+lisp syntax - minimal
+
+immutability - you are not changing things in place - that tree is still a magnolia tree
+
+no types, procedures, objects - didnt even know what those things were - ew.
+
+these things fostered focus on given problem at hand - single strands - avoid unnecessary complexity
+
+parenthesis were helpful in providing boundaries - seeing things as expressions - THIS HERE BETWEEN THESE ( ) THINGS WILL EVALUATE TO SOMETHING
+
+repl - immediate feedback, small feedback loops
+
+eval to comment for everything !!! what does this evaluate to? what is the shape  of my result?
+
+made huge scratch pads to test ideas - was that weird? it worked for me
+
+resources - philosophical talks, clojure for the brave and true, clojure koans, lurked on clojurians slack - too scared to ask any questions there, looking for community, messaging daniel higginbotham and jordan miller out of no where, clojure camp was developing, i was one of the founding students, found great commorodery around learning this thing together, show and tell for projects, accountability every week! thortech solutions every week.
+
+volunteering at and going to conferences - meeting your heroes, meet the people creating with the same language you are, talking, listening
+
+what drew me to clojure? i didnt know much about it - but i listened to the things the author said, and the people who work closely on the project and datomic as well, and i got to know some of them and my gosh they are so smart, kind, and FUNNY, I thought - this seems like a really cool language and community that people are really excited about. i want to be excited about it too!
+
+i learned programming thru the lens of clojure so lets take any general programming language concept - how does clojure make easier, clearer, simpler, more straight to the point?
+
+oh my gosh, clojure is so hard. is it? isn’t programming just hard?
