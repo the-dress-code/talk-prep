@@ -10,14 +10,12 @@ on-device via Ollama — no content ever leaves the machine.
   localhost:11434 via req_llm. If you're not sure, ask.
 - Do not add dependencies without being asked. Check mix.exs before
   suggesting a new library.
+- Do not commit. Your job is to write correct code and stop.
 
-## What "done" means
-Before committing anything, you must run these commands in order:
-1. `mix compile` — fix all errors and warnings before proceeding
-2. `mix test` — fix all failures before proceeding
-3. Only after both pass: commit with a clear message
-
-If you cannot run these commands, stop and say so. Do not commit unverified code.
+## What "done" means for Aider
+Your job is to write correct code and stop. Do not commit.
+After you make changes, tell me what you changed and why.
+The human will run mix compile and mix test to verify.
 
 ## Stack
 - Elixir / Mix / OTP
