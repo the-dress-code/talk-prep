@@ -18,6 +18,14 @@ full context and resume the sprint exactly where you left off.
   horizontal rule) in the format: *Generated: YYYY-MM-DD* — keep it out of
   the main checklist body.
 
+- At the end of each day's session, after presenting the updated sprint log, ask the
+  human to confirm they are happy with it before proceeding. Once confirmed, generate
+  a Slack check-in message using the day's log entry (Completed, Lessons learned,
+  Left off at) as the source. Format: project name on first line ("Day N: Agentic
+  Engineering Learning Sprint"), then 3-5 short paragraphs, no markdown, no asterisks,
+  casual and concise, written in first person like a human. Manager knows about the
+  sprint — no need to over-explain. Keep it tight.
+
 ---
 
 ## Who I am
