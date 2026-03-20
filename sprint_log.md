@@ -114,7 +114,7 @@ question. Not silently broken. Not falsely done.
 
 ---
 
-## The 17-day sprint outline
+## The 16-day sprint outline
 *Living document — days may bleed into each other. The "leveled up when"
 criteria matter more than the day count.*
 
@@ -295,7 +295,7 @@ untested — will confirm on Day 4 when we build the real braindump processor.
 **Open / unverified:**
 - BraindumpProcessor.process/1 test passes but return value has not been
   manually inspected — we have not confirmed that `raw`, `themes`, `claims`,
-  and `summary` are actually populated correctly in practice. Day 5 should
+  and `summary` are actually populated correctly in practice. Day 6 should
   include a manual verification step (e.g. run process/1 in iex and inspect
   the output).
 
@@ -307,7 +307,7 @@ runs end to end: file path in, structured map out. Ready for Day 5 consolidation
 ### Day 5 ✅
 **Goal:** Plan review, product vision, revised sprint (Opus session)
 **Completed:**
-- Brought in Claude Opus for independent assessment of the 17-day plan
+- Brought in Claude Opus for independent assessment of the sprint plan
 - Identified Aider + Qwen ceiling: solid for Levels 3–4, not sufficient for
   Level 6 autonomous workflows. Plan now uses Claude Code for Levels 5–6.
 - Removed stale Jido references from sprint outline (Days 8, 12)
@@ -333,8 +333,8 @@ runs end to end: file path in, structured map out. Ready for Day 5 consolidation
 - Level 5: not yet — no MCP, no external tool access from agents
 - Level 6: not yet — no harness, no walk-away test
 
-**Left off at:** Sprint log updated with revised Days 5–17. Product vision
-documented. Ready for Day 5 consolidation.
+**Left off at:** Sprint log updated with revised Days 6–16. Product vision
+documented. Ready for Day 6 consolidation.
 
 ---
 
@@ -347,5 +347,5 @@ The first real use of talk_prep is the Dutch Clojure Days talk,
 May 8, Amsterdam. Talk title: "Clojure as Your First Language:
 Shaping a Functional Mindset". This is a 45-minute talk for a
 beginner-friendly audience. Details still forthcoming from the
-conference. The tool needs to be useful enough to actually help
-with this talk before May 8.
+conference. Rehearsal target: April 5. The tool needs to be useful
+enough to actually help with this talk before May 8.
