@@ -60,7 +60,11 @@ cd ~/Projects/talk_prep
 aider --model ollama/qwen2.5-coder:14b --no-auto-commits
 ```
 
-**Two terminal tabs:**
+**Two agents, different roles:**
+- Aider + Qwen — hands-on coding agent for iterative code changes (Levels 3–4)
+- Claude Code — orchestration, planning, harness engineering (Levels 5–6)
+
+**Two terminal tabs (when using Aider):**
 - Tab 1 — Aider (interactive, stays open)
 - Tab 2 — mix commands (mix compile, mix test)
 
@@ -69,7 +73,8 @@ aider --model ollama/qwen2.5-coder:14b --no-auto-commits
 - You run `mix compile` and `mix test` in Tab 2 to verify
 - You commit manually when both pass
 - This is correct Level 3/4 behavior — you are the verifier
-- Aider self-verification comes at Level 6 (Day 13+)
+- Aider + Qwen will hit a ceiling around Level 5 — Claude Code takes over
+  for harness engineering, verification loops, and walk-away tests (Day 8+)
 
 ---
 
@@ -114,27 +119,30 @@ question. Not silently broken. Not falsely done.
 criteria matter more than the day count.*
 
 ### Week 1 — Environment & Level 3 (Context Engineering)
-- Day 1  ✅  Get Ollama + Qwen running locally, Aider installed and talking to
-            Qwen, make one real change to a project (Ollama, Qwen, Aider)
-- Day 2  ✅  Write first AGENTS.md for talk_prep, feel the difference it makes
-- Day 3  ✅  Experiment with context — too little, too much, just right — build
-            the instinct
-- Day 4  ✅  Build talk_prep core — ingest a braindump file using Aider with
-            good context
-- Day 5      Consolidate — clean up AGENTS.md, clean git history, Level 3
-            checkpoint
+- Day 1  ✅  Get environment working (Ollama, Qwen, Aider)
+- Day 2  ✅  Write AGENTS.md, feel the difference context makes
+- Day 3  ✅  Context experiments — too little, too much, just right
+- Day 4  ✅  Build braindump processor with good context
+- Day 5  ✅  Plan review, product vision, revised sprint (Opus session)
 
 **Level 3 leveled up when:** you can predict in advance whether a prompt will
 confuse the agent, and you know how to fix it before running it.
 
 ### Week 2 — Level 4 & 5 (Compounding + Capabilities)
-- Day 6      Introduce plan→delegate→assess→codify loop, start progress.md
-- Day 7      Add docs/ folder with architecture.md, see how it changes agent
-            behavior
-- Day 8      Define first real Jido Action that processes braindump text via Qwen
-- Day 9      Install and wire one MCP into Aider
-- Day 10     Write first reusable skill — Elixir conventions checker
-- Day 11     Level 4+5 checkpoint — does the agent feel more capable than Day 1?
+- Day 6      Consolidate + compounding loop — verify braindump output in iex,
+            codify Days 1–5 lessons into AGENTS.md and docs/, clean up
+            AGENTS.md, start progress.md. Test: does Aider produce better
+            code now than on Day 2?
+- Day 7      Build next feature from product vision — make the tool useful
+            for the real talk. **Product gate: process real talk content and
+            get output you'd actually use.**
+- Day 8      Introduce Claude Code as second agent. Use it alongside Aider —
+            experience multi-agent workflow. Wire up one MCP server
+            (something immediately useful, not theoretical).
+- Day 9      Build verify.sh (mix compile + mix test + mix credo). First
+            harness artifact. Run Aider against it — does it pass first try?
+- Day 10     Level 4+5 checkpoint — can the agent build on prior sessions?
+            Can it do something it couldn't before?
 
 **Level 4 leveled up when:** you start a session and the agent already "knows"
 things you taught it last week, because you codified them properly.
@@ -143,14 +151,20 @@ things you taught it last week, because you codified them properly.
 do before — access a real system, run a real check.
 
 ### Week 3 — Level 6 (Harness Engineering)
-- Day 12     Write first real ExUnit tests for talk_prep Jido Action (ExUnit, Credo)
-- Day 13     Write verify.sh — automated feedback script
-- Day 14     Update AGENTS.md with verification contract, run full loop first time
-- Day 15     Let Aider run a task solo against verify.sh — walk away, see what
-            happens
-- Day 16     Add adversarial reviewer pass (two-agent pattern)
-- Day 17     Level 6 checkpoint — can the agent work, verify, and self-correct
-            without you?
+- Day 11     Write real ExUnit tests for BraindumpProcessor — not just shape
+            checks but "does the output contain themes from the input?"
+            Split unit tests (no Ollama) from integration tests.
+- Day 12     Full verification loop — Claude Code runs a task, runs verify.sh,
+            interprets results, fixes issues. You watch but don't intervene.
+- Day 13     Walk-away test. Give the agent a task (e.g., add CLI entry point).
+            Step away. Come back and evaluate.
+- Day 14     Build redundancy mapper or Socratic questioner — more complex
+            task for the harness. **Product gate: tool helps with real talk
+            prep, output you'd rehearse from.**
+- Day 15     Adversarial pattern — two-agent review (one writes, one
+            critiques). The Socrates agent concept.
+- Day 16     Level 6 checkpoint + talk prep. Use the full pipeline to
+            generate your actual conference talk outline.
 
 ---
 
@@ -287,6 +301,40 @@ untested — will confirm on Day 4 when we build the real braindump processor.
 
 **Left off at:** BraindumpProcessor.process/1 working and tested. Pipeline
 runs end to end: file path in, structured map out. Ready for Day 5 consolidation.
+
+---
+
+### Day 5 ✅
+**Goal:** Plan review, product vision, revised sprint (Opus session)
+**Completed:**
+- Brought in Claude Opus for independent assessment of the 17-day plan
+- Identified Aider + Qwen ceiling: solid for Levels 3–4, not sufficient for
+  Level 6 autonomous workflows. Plan now uses Claude Code for Levels 5–6.
+- Removed stale Jido references from sprint outline (Days 8, 12)
+- Consolidated Week 2 from 6 days to 5, cut filler (architecture.md for a
+  200-line project, Elixir conventions checker skill)
+- Added two product gates tied to May 8 deadline and April 5 rehearsal target
+- Defined product vision with two modes: Organize (never invent) and Improve
+  (opt-in, AI suggestions allowed). Saved as docs/product_vision.md.
+- Feature list: braindump ingestion, Socratic questioner, abstract → skeleton,
+  redundancy mapper, modular idea store, plus improve mode (TBD)
+
+**Key decisions:**
+- Split agent roles: Aider + Qwen for hands-on coding (L3–4), Claude Code
+  for orchestration and harness engineering (L5–6)
+- "Never invent" is the core product constraint — all features organize the
+  user's own words, except explicit improve mode
+- Verify.sh moved earlier (Day 9) — simpler than originally scoped
+- Test suite split (unit vs integration) deferred until Day 11 when it's needed
+
+**Level assessment:**
+- Level 3: ✅ solid — can predict prompt confusion, knows how to fix it
+- Level 4: partial — sprint log compounds, but agent environment not yet tested
+- Level 5: not yet — no MCP, no external tool access from agents
+- Level 6: not yet — no harness, no walk-away test
+
+**Left off at:** Sprint log updated with revised Days 5–17. Product vision
+documented. Ready for Day 5 consolidation.
 
 ---
 
