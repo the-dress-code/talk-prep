@@ -21,10 +21,11 @@ full context and resume the sprint exactly where you left off.
 - At the end of each day's session, after presenting the updated sprint log, ask the
   human to confirm they are happy with it before proceeding. Once confirmed, generate
   a Slack check-in message using the day's log entry (Completed, Lessons learned,
-  Left off at) as the source. Format: project name on first line ("Day N: Agentic
-  Engineering Learning Sprint"), then 3-5 short paragraphs, no markdown, no asterisks,
-  casual and concise, written in first person like a human. Manager knows about the
-  sprint — no need to over-explain. Keep it tight.
+  Left off at) as the source. Format: first line is "Day N: Agentic Engineering
+  Learning Sprint" followed by a second line with the day's goal as a title. Then
+  concise bullet points — what got done, what was learned. No markdown, no asterisks,
+  no formatting symbols. Use "Next:" instead of "Tomorrow:" for the closing item.
+  Keep it tight. Manager knows about the sprint — no need to over-explain.
 
 ---
 
