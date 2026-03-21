@@ -9,6 +9,12 @@ structured talk outlines. Runs entirely locally (Ollama + Qwen) for privacy.
 words and ideas. The tool extracts, questions, and structures — it does not
 generate content unless explicitly asked.
 
+**Current reality (Qwen 14B limitation):** Qwen partially violates this
+constraint — topic labels in particular tend to be Qwen's own phrasing rather
+than verbatim fragments from the braindump. This is a known limitation being
+tolerated for now. The output is still useful. When a more capable model is
+available, this constraint should be fully enforceable.
+
 ## Features (priority order)
 
 ### Organize mode (core constraint: never invent, only organize)

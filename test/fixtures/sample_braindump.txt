@@ -4,7 +4,7 @@ Clojure was the first programming language i took seriously and used to build th
 
 listened to rich hickey  talks like hammock driven dev and stu halloway talks (which ones) before I knew what a repl was - do other languages have philosophical leaders with ideas that go beyond their languages? i basically joined a cult, right?
 
-a combination of things kept things more straightforward in a whole that was getting deeper and more vast the longer I stayed with it
+a combination of things kept things more straightforward in a world that was getting deeper and more vast the longer I stayed with it
 
 lisp syntax - minimal
 

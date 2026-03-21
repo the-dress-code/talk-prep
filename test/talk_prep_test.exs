@@ -14,7 +14,6 @@ defmodule TalkPrepTest do
     assert is_map(result)
     assert Map.has_key?(result, :raw)
     assert Map.has_key?(result, :themes)
-    assert Map.has_key?(result, :claims)
-    assert Map.has_key?(result, :summary)
+    assert Map.has_key?(result, :topics)
   end
 end

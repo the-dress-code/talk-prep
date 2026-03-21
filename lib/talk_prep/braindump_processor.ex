@@ -15,19 +15,31 @@ defmodule TalkPrep.BraindumpProcessor do
 
         prompt = """
         Analyze the following braindump text and return ONLY a JSON object with exactly these keys:
-        - "raw": the original text as a string
-        - "themes": a list of strings, each a broad topic the text is about
-        - "claims": a list of objects, each with "claim" (a string assertion) and "support" (a list of strings that back it up)
-        - "summary": a one paragraph summary of the text as a string
+        - "raw": the original text as a string, unchanged
+        - "themes": a list of strings, each a specific concept or idea from the text. Use concrete terms like "immutability", "REPL feedback loop", "minimal syntax" — not broad categories like "learning process" or "community". Extract all of them.
+        - "topics": a list of objects. Use these definitions:
+          - A TOPIC is a grouping or theme that holds related ideas together. It can be a fragment or label. A topic can stand alone with no points.
+          - A POINT is a direct statement or assertion from the braindump that belongs under a topic. A point can stand alone with no details.
+          - A DETAIL is a specific example, elaboration, or sub-item that belongs under a point.
 
-        If no claims are found, return "claims" as an empty list.
-        Return ONLY the JSON object. No explanation, no markdown, no code fences.
+          Each topic object has:
+          - "topic": the grouping label or theme (string, use the speaker's own words)
+          - "points": a list of point objects under this topic (can be empty). Each point object has:
+            - "point": the statement or assertion (string, use the speaker's own words)
+            - "details": a list of strings, each a specific example or elaboration under this point (can be empty)
+          - "needs_points": true if the topic has no points and would benefit from elaboration, false otherwise
+
+        Rules:
+        - Extract every topic — do not skip any.
+        - Do not add interpretation or ideas not present in the text.
+        - If no topics are found, return "topics" as an empty list.
+        - Return ONLY the JSON object. No explanation, no markdown, no code fences.
 
         Braindump text:
         #{content}
         """
 
-        {:ok, response} = ReqLLM.generate_text(model, prompt, api_key: "ollama")
+        {:ok, response} = ReqLLM.generate_text(model, prompt, api_key: "ollama", receive_timeout: 120_000)
 
         parse_response(ReqLLM.Response.text(response))
 
@@ -48,20 +60,25 @@ defmodule TalkPrep.BraindumpProcessor do
        %{
          "raw" => raw,
          "themes" => themes,
-         "claims" => claims,
-         "summary" => summary
+         "topics" => topics
        }} ->
         %{
           raw: raw,
           themes: themes,
-          claims:
-            Enum.map(claims, fn claim ->
+          topics:
+            Enum.map(topics, fn topic ->
               %{
-                claim: claim["claim"],
-                support: claim["support"]
+                topic: topic["topic"],
+                needs_points: topic["needs_points"],
+                points:
+                  Enum.map(topic["points"] || [], fn point ->
+                    %{
+                      point: point["point"],
+                      details: point["details"] || []
+                    }
+                  end)
               }
-            end),
-          summary: summary
+            end)
         }
 
       {:error, _} ->

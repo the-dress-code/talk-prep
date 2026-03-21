@@ -21,3 +21,12 @@ The human will run mix compile and mix test to verify.
 - Elixir / Mix / OTP
 - req_llm ~> 1.7 (LLM HTTP client)
 - Qwen qwen2.5-coder:14b via Ollama (local model, http://localhost:11434)
+
+## Known Qwen limitations
+- Topic labels tend to be Qwen's own phrasing rather than the speaker's verbatim
+  words, despite being instructed otherwise. This is expected behavior for this
+  model — not a bug to fix in the code.
+- Complex prompts (3-level hierarchy) require receive_timeout: 120_000 or Qwen
+  will time out. Default timeout is too short.
+- Output shape can vary between runs — Qwen is non-deterministic. Test a few
+  times before concluding a prompt change helped or hurt.
