@@ -339,9 +339,48 @@ documented. Ready for Day 6 consolidation.
 
 ---
 
+### Day 6 ✅
+**Goal:** Consolidate + compounding loop
+
+**Completed:**
+- Manually verified BraindumpProcessor.process/1 output in iex — confirmed pipeline works end to end
+- Iterated on prompt multiple times based on live output inspection
+- Dropped summary field — Qwen was inventing content, violating core constraint
+- Renamed claims/support → topics/points/details with three-level hierarchy
+- Added needs_points flag to surface topics lacking supporting detail
+- Defined topic/point/detail in the prompt with clear examples
+- Fixed timeout failures — added receive_timeout: 120_000 to LLM call
+- Added @tag timeout: 180_000 to integration test to match LLM timeout
+- Documented Qwen limitations in AGENTS.md and product_vision.md
+- Set up macOS Glass sound notification hook in Claude Code global settings
+
+**Key decisions:**
+- Skip code comments for Qwen limitations — docs are the right home, code comments go stale
+- "Never invent" remains the product goal; Qwen partial invention is a tolerated limitation, not accepted behavior
+- Output shape: %{raw, themes, topics} where topics have points (with details) and needs_points flag
+
+**Lessons learned:**
+- recompile() in iex is required to pick up changes compiled in another terminal — without it you are testing old code
+- Qwen is non-deterministic — run multiple times before concluding a prompt change helped or hurt
+- Qwen invents topic labels despite instructions; this is a model limitation not a prompt problem
+- Complex prompts (3-level hierarchy) require receive_timeout: 120_000 or Qwen times out
+- ExUnit default timeout (60s) is shorter than our LLM receive_timeout — integration tests need @tag timeout
+
+**Open / carry to Day 7:**
+- needs_points always returns false — Qwen not flagging topics that lack points
+- Topic labels use Qwen's phrasing, not speaker's verbatim words — revisit with better model
+- Compounding test not done — did not open fresh Aider session to compare Day 2 behavior
+- progress.md not started
+- AGENTS.md cleanup not done
+
+**Left off at:** BraindumpProcessor producing useful topic/point/detail structure.
+Prompt iteration paused — output is good enough to work with. All tests passing.
+Ready for Day 7.
+
+---
+
 ## Open questions
-- Does the Qwen prompt reliably produce all four fields, or does it sometimes
-  omit one? Needs manual inspection in iex.
+- needs_points flag always false — prompt issue or Qwen limitation?
 
 ## Real deadline context
 The first real use of talk_prep is the Dutch Clojure Days talk,

@@ -6,6 +6,7 @@ defmodule TalkPrepTest do
     assert TalkPrep.hello() == :world
   end
 
+  @tag timeout: 180_000
   test "processes a braindump file" do
     file_path = "test/fixtures/sample_braindump.txt"
     assert File.exists?(file_path), "Sample braindump file does not exist"
