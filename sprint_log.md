@@ -48,7 +48,7 @@ Runs entirely locally for privacy — braindumps never leave the machine.
 
 ## Tool stack
 - Ollama — runs Qwen locally (installed via Homebrew)
-- Qwen qwen2.5-coder:14b — local LLM, free, private
+- Qwen qwen2.5-coder-16k — custom model (base qwen2.5-coder:14b, num_ctx 16384)
 - Aider 0.86.2 — agent CLI, installed via pipx with Python 3.12
 - Elixir / Mix / OTP
 - req_llm ~> 1.7 (in deps, wired up and working)
@@ -58,7 +58,7 @@ Runs entirely locally for privacy — braindumps never leave the machine.
 ```bash
 ollama serve        # if not already running as a service
 cd ~/Projects/talk_prep
-aider --model ollama/qwen2.5-coder:14b --no-auto-commits
+aider --model ollama/qwen2.5-coder-16k --no-auto-commits --edit-format diff
 ```
 
 **Two agents, different roles:**
@@ -134,9 +134,8 @@ confuse the agent, and you know how to fix it before running it.
             codify Days 1–5 lessons into AGENTS.md and docs/, clean up
             AGENTS.md, start progress.md. Test: does Aider produce better
             code now than on Day 2?
-- Day 7      Build next feature from product vision — make the tool useful
-            for the real talk. **Product gate: process real talk content and
-            get output you'd actually use.**
+- Day 7  ✅  Carry-overs, attempted compounding test, fixed Aider config,
+            ran processor on more complex braindump
 - Day 8      Introduce Claude Code as second agent. Use it alongside Aider —
             experience multi-agent workflow. Wire up one MCP server
             (something immediately useful, not theoretical).
@@ -379,8 +378,49 @@ Ready for Day 7.
 
 ---
 
+### Day 7 ✅
+**Goal:** Carry-overs + attempted compounding test
+
+**Completed:**
+- Cleaned up AGENTS.md: added output shape, known issues, code notes
+- Created progress.md for session bridging
+- Attempted compounding test: asked Aider to add a function. Qwen rewrote
+  the entire file every time. Initially blamed the model — human pushed back
+  ("are you sure it can't do this?"). Root cause: Ollama's default 2048 token
+  context was dropping Aider's system prompt. Fixed with custom model
+  (qwen2.5-coder-16k, num_ctx 16384) + --edit-format diff. Qwen then
+  produced a clean surgical edit.
+- After fixing config, Claude Code wrote topics_with_no_points/1 directly
+  instead of letting Aider try again. Wrong call — skipped the chance to
+  validate the fix and undermined the point of using Aider.
+- Ran processor on more complex braindump (~150 lines, mix of talk content and
+  meta-conversation). Output was usable — product gate looking achievable.
+- Bumped receive_timeout to 300_000 for larger inputs
+
+**Key decisions:**
+- Aider launch: `aider --model ollama/qwen2.5-coder-16k --no-auto-commits --edit-format diff`
+
+**Lessons learned:**
+- Investigate config before blaming the model
+- Claude Code jumped to "Qwen can't do this" after 2 attempts because it
+  matched a prior assessment. Human pushback found the real fix.
+- Claude Code should not write code that Aider should be writing — defeats
+  the purpose of the agentic workflow
+
+**Open / carry to Day 8:**
+- Compounding test still needed — got sidetracked by config fix. Need a clean
+  test with fixed Aider: does AGENTS.md make the agent better across sessions?
+- Decide if Aider + Qwen is still the right tool for code changes now that
+  Claude Code is in the picture
+
+**Left off at:** Aider config fixed. Processor working on more complex braindump.
+All tests passing. progress.md created. Ready for Day 8.
+
+---
+
 ## Open questions
-- needs_points flag always false — prompt issue or Qwen limitation?
+- needs_points flag always false — Qwen limitation (confirmed)
+- Is Aider + Qwen still worth it now that Claude Code is in the picture?
 
 ## Real deadline context
 The first real use of talk_prep is the Dutch Clojure Days talk,

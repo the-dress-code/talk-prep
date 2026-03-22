@@ -39,7 +39,7 @@ defmodule TalkPrep.BraindumpProcessor do
         #{content}
         """
 
-        {:ok, response} = ReqLLM.generate_text(model, prompt, api_key: "ollama", receive_timeout: 120_000)
+        {:ok, response} = ReqLLM.generate_text(model, prompt, api_key: "ollama", receive_timeout: 300_000)
 
         parse_response(ReqLLM.Response.text(response))
 
@@ -85,4 +85,8 @@ defmodule TalkPrep.BraindumpProcessor do
         {:error, "Invalid response format from Qwen model"}
     end
   end
+  def topics_with_no_points(%{topics: topics}) do
+    Enum.filter(topics, fn topic -> topic.points == [] end)
+  end
+
 end
