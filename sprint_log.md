@@ -12,8 +12,9 @@ full context and resume the sprint exactly where you left off.
 ## Session conventions
 - At the start of each day's session, generate a printable day checklist
   in the same format as the Day 1 checklist (goal, bullet steps, stretch goal).
-- Follow the style of the Day 1 checklist — short goal line, plain bullet steps,
-  one stretch goal, brief closing note. Clear and concise, no headers or sub-sections.
+- Follow the style of the Day 1 checklist exactly: opening line "Here's your Day N checklist:",
+  horizontal rule, bold title with goal, plain `*` bullet steps (no bold, no sub-sections),
+  stretch goal block, horizontal rule, one closing sentence, horizontal rule, timestamp.
 - Save the checklist as a markdown file in `checklists/day_N_checklist.md` and
   commit it to the repo.
 - Also display the checklist in the chat message so it can be copied directly
@@ -29,6 +30,11 @@ full context and resume the sprint exactly where you left off.
   concise bullet points — what got done, what was learned. No markdown, no asterisks,
   no formatting symbols. Use "Next:" instead of "Tomorrow:" for the closing item.
   Keep it tight. Manager knows about the sprint — no need to over-explain.
+
+---
+
+## Principles
+- **Agent-Y verifies Agent-X's work.** The agent that writes the code should not be the same agent that writes (or runs) the tests. Same model checking itself shares the same blind spots. When writing tests for new code, use a separate session or a different agent. Day 15 adversarial pattern: one agent writes, a separate agent critiques and verifies.
 
 ---
 
