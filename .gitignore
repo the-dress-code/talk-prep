@@ -34,3 +34,6 @@ talk_prep-*.tar
 .cursor/
 .vscode/
 .aider*
+
+# Claude Code
+.claude/

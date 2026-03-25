@@ -10,21 +10,24 @@ on-device via Ollama — no content ever leaves the machine.
   localhost:11434 via req_llm. If you're not sure, ask.
 - Do not add dependencies without being asked. Check mix.exs before
   suggesting a new library.
-- Do not commit. Your job is to write correct code and stop.
 
-## What "done" means for Aider
-Your job is to write correct code and stop. Do not commit.
-After you make changes, tell me what you changed and why.
-The human will run mix compile and mix test to verify.
+## What "done" means
+Code changes must pass `mix compile` and `mix test` before being considered done.
+Do not commit unless asked.
+
+## Agent history
+- **Days 1–7:** Aider + Qwen (local, free). Used to learn context engineering
+  (Level 3) and compounding (Level 4). Phased out on Day 8 — Qwen's limitations
+  (inventing content, non-deterministic output, needs_points always false) made it
+  a poor fit for Level 5+ work.
+- **Day 8+:** Claude Code is the sole agent. Handles coding, orchestration, and
+  harness engineering. Multi-agent returns at Day 15 — automated and adversarial,
+  not manual.
 
 ## Stack
 - Elixir / Mix / OTP
 - req_llm ~> 1.7 (LLM HTTP client)
-- Qwen qwen2.5-coder-16k via Ollama (local model, http://localhost:11434)
-  - Custom model: base qwen2.5-coder:14b with num_ctx 16384
-  - Aider launch: `aider --model ollama/qwen2.5-coder-16k --no-auto-commits --edit-format diff`
-  - The 16k context window is required — default 2048 causes Qwen to drop
-    the system prompt and rewrite entire files instead of making surgical edits
+- Ollama (local LLM server, http://localhost:11434)
 
 ## Current output shape
 BraindumpProcessor.process/1 returns:
@@ -44,17 +47,15 @@ BraindumpProcessor.process/1 returns:
 }
 ```
 
-## Known Qwen limitations
-- Topic labels tend to be Qwen's own phrasing rather than the speaker's verbatim
-  words, despite being instructed otherwise. This is expected behavior for this
-  model — not a bug to fix in the code.
-- needs_points currently always returns false — Qwen does not flag topics that
-  lack supporting points. Known issue, not a code bug.
-- Complex prompts (3-level hierarchy) require receive_timeout: 120_000 or Qwen
-  will time out. Default timeout is too short.
-- Output shape can vary between runs — Qwen is non-deterministic. Test a few
-  times before concluding a prompt change helped or hurt.
+## Known issues (Ollama/Qwen)
+- Topic labels tend to be Qwen's phrasing, not the speaker's verbatim words
+- needs_points currently always returns false
+- Output shape can vary between runs — Qwen is non-deterministic
+- Complex prompts require receive_timeout: 300_000 for larger inputs
+
+## CLI
+- `mix braindump <path/to/file.txt>` — processes a braindump and prints structured output
 
 ## Code notes
 - BraindumpValidator exists but is not wired into the pipeline yet.
-- FileIngestor.process_file/1 is a placeholder — read_file/1 is the one in use.
+- FileIngestor has only read_file/1 — placeholder process_file/1 was removed on Day 8.

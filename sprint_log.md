@@ -4,6 +4,9 @@
 Paste this entire file at the start of any new Claude chat session to restore
 full context and resume the sprint exactly where you left off.
 
+**Also read:** progress.md (current state + deferred items) and AGENTS.md
+(constraints + stack). These three files together give a complete picture.
+
 ---
 
 ## Session conventions
@@ -418,9 +421,47 @@ All tests passing. progress.md created. Ready for Day 8.
 
 ---
 
+### Day 8 ✅
+**Goal:** Claude Code takes over — phase out Aider, wire up something real
+
+**Completed:**
+- Decided to phase out Aider + Qwen. Rationale: Aider taught context engineering
+  (L3) and compounding (L4), but Qwen's limitations (inventing content,
+  needs_points broken, non-deterministic) make it a poor fit for L5+ work. Claude
+  Code (Pro plan) handles both coding and orchestration from here. Multi-agent
+  returns at Day 15 — automated and adversarial, not manual.
+- Updated AGENTS.md to reflect Claude Code as sole agent
+- MCP deferred — Claude Code's built-in tools (bash, file I/O, mix run -e) already
+  close the feedback loop for this project. No gap to fill right now. Revisit when
+  a real capability gap appears (see docs/mcp_notes.md).
+- Built `mix braindump` CLI entry point — first real coding task done by Claude Code.
+  Processes a file and prints themes, topics, points, and details in readable format.
+- Removed placeholder process_file/1 from FileIngestor — clean compile, no warnings
+- Updated AGENTS.md, progress.md, and sprint log with Day 8 state
+
+**Key decisions:**
+- Aider + Qwen phased out on Day 8 as the sprint plan originally called for
+- MCP deferred — Claude Code can already run the processor via `mix run -e`,
+  run tests, and edit code. No capability gap to fill right now.
+
+**Lessons learned:**
+- Multi-agent management *is* part of agentic engineering, but the Level 6 version
+  is automated orchestration (agent dispatches to agent), not manual terminal
+  switching. That's Day 15, not Day 8.
+- Don't bolt on tools to check a box — wait for a real friction point
+- Claude Code worktrees caused confusion about where files landed — caught it
+  mid-session, switched to writing directly to main repo
+
+**Left off at:** CLI working (`mix braindump`). All tests passing, clean compile.
+verify.sh is next (Day 9). Product gate getting closer — tool is now usable from
+the terminal.
+
+---
+
 ## Open questions
 - needs_points flag always false — Qwen limitation (confirmed)
-- Is Aider + Qwen still worth it now that Claude Code is in the picture?
+- ~~Is Aider + Qwen still worth it now that Claude Code is in the picture?~~
+  **Resolved Day 8:** No. Phased out. See Day 8 log.
 
 ## Real deadline context
 The first real use of talk_prep is the Dutch Clojure Days talk,
