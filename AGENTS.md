@@ -55,6 +55,7 @@ BraindumpProcessor.process/1 returns:
 
 ## CLI
 - `mix braindump <path/to/file.txt>` — processes a braindump and prints structured output
+- `./verify.sh` — full quality gate (compile + test + credo). Run before committing or handing off to a verifying agent. Pass `--strict` to fail on any credo issue.
 
 ## Code notes
 - BraindumpValidator exists but is not wired into the pipeline yet.

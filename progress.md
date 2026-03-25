@@ -1,6 +1,6 @@
 # progress.md
 
-Last updated: 2026-03-24 (Day 8)
+Last updated: 2026-03-25 (Day 9)
 
 ## What works
 - BraindumpProcessor.process/1 — file path in, structured map out
@@ -11,6 +11,7 @@ Last updated: 2026-03-24 (Day 8)
 - Tested on real talk content — produced usable output
 - All tests passing (unit + integration), clean compile with no warnings
 - Claude Code is the sole agent (Aider + Qwen phased out Day 8)
+- verify.sh — full quality gate (compile + test + credo), lenient default, `--strict` opt-in
 
 ## Known issues
 - needs_points flag always returns false — Qwen limitation, not a code bug
@@ -24,5 +25,5 @@ Last updated: 2026-03-24 (Day 8)
   preview, external services). Details in docs/mcp_notes.md.
 
 ## What's next
-- Day 9: build verify.sh (mix compile + mix test + mix credo)
-- Product gate: process real talk content and get output you'd actually use (CLI now exists — getting closer)
+- Day 10: Level 4+5 checkpoint — can the agent build on prior sessions? Can it do something it couldn't before?
+- Product gate: process real talk content and get output you'd actually use (CLI exists, verify.sh in place — getting close)

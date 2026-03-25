@@ -22,6 +22,10 @@ full context and resume the sprint exactly where you left off.
   horizontal rule) in the format: *Generated: YYYY-MM-DD* — keep it out of
   the main checklist body.
 
+- Commit message format: `type: Day N — short description` as the title, optional body with detail.
+  Types: `feat` (new code/behavior), `docs` (docs/logs only), `test` (tests only), `fix` (bug fix).
+  Example: `feat: Day 9 — add verify.sh, install credo, lenient default with --strict flag`
+
 - At the end of each day's session, after presenting the updated sprint log, ask the
   human to confirm they are happy with it before proceeding. Once confirmed, generate
   a Slack check-in message using the day's log entry (Completed, Lessons learned,
@@ -56,35 +60,31 @@ Runs entirely locally for privacy — braindumps never leave the machine.
 ---
 
 ## Tool stack
+
+**Current (Day 8+):**
 - Ollama — runs Qwen locally (installed via Homebrew)
 - Qwen qwen2.5-coder-16k — custom model (base qwen2.5-coder:14b, num_ctx 16384)
-- Aider 0.86.2 — agent CLI, installed via pipx with Python 3.12
+- Claude Code — sole coding and orchestration agent
 - Elixir / Mix / OTP
 - req_llm ~> 1.7 (in deps, wired up and working)
 - OLLAMA_API_BASE=http://localhost:11434 (set in ~/.zshrc)
+
+**Phased out (Days 1–7):**
+- Aider 0.86.2 — used to learn context engineering (Level 3) and compounding (Level 4).
+  Phased out Day 8 — Qwen's limitations (inventing content, non-deterministic output)
+  made it a poor fit for Level 5+ work.
 
 **To start a session:**
 ```bash
 ollama serve        # if not already running as a service
 cd ~/Projects/talk_prep
-aider --model ollama/qwen2.5-coder-16k --no-auto-commits --edit-format diff
 ```
-
-**Two agents, different roles:**
-- Aider + Qwen — hands-on coding agent for iterative code changes (Levels 3–4)
-- Claude Code — orchestration, planning, harness engineering (Levels 5–6)
-
-**Two terminal tabs (when using Aider):**
-- Tab 1 — Aider (interactive, stays open)
-- Tab 2 — mix commands (mix compile, mix test)
+Claude Code handles coding and orchestration from here.
 
 **Practical workflow (current stage):**
-- Aider writes code, does not commit
-- You run `mix compile` and `mix test` in Tab 2 to verify
-- You commit manually when both pass
-- This is correct Level 3/4 behavior — you are the verifier
-- Aider + Qwen will hit a ceiling around Level 5 — Claude Code takes over
-  for harness engineering, verification loops, and walk-away tests (Day 8+)
+- Claude Code writes and edits code, does not commit
+- Run `./verify.sh` to verify (or `mix compile` and `mix test` during active coding)
+- Commit manually when verify.sh passes
 
 ---
 
@@ -139,17 +139,17 @@ criteria matter more than the day count.*
 confuse the agent, and you know how to fix it before running it.
 
 ### Week 2 — Level 4 & 5 (Compounding + Capabilities)
-- Day 6      Consolidate + compounding loop — verify braindump output in iex,
+- Day 6  ✅  Consolidate + compounding loop — verify braindump output in iex,
             codify Days 1–5 lessons into AGENTS.md and docs/, clean up
-            AGENTS.md, start progress.md. Test: does Aider produce better
-            code now than on Day 2?
+            AGENTS.md, start progress.md.
 - Day 7  ✅  Carry-overs, attempted compounding test, fixed Aider config,
             ran processor on more complex braindump
-- Day 8      Introduce Claude Code as second agent. Use it alongside Aider —
-            experience multi-agent workflow. Wire up one MCP server
-            (something immediately useful, not theoretical).
-- Day 9      Build verify.sh (mix compile + mix test + mix credo). First
-            harness artifact. Run Aider against it — does it pass first try?
+- Day 8  ✅  Phase out Aider, Claude Code takes over as sole agent. Built
+            `mix braindump` CLI entry point. MCP deferred — no capability
+            gap yet.
+- Day 9  ✅  Build verify.sh (compile + test + credo). First step toward
+            harness engineering. Verified by a fresh Claude Code session
+            (Agent-Y pattern practiced for real).
 - Day 10     Level 4+5 checkpoint — can the agent build on prior sessions?
             Can it do something it couldn't before?
 
@@ -461,6 +461,41 @@ All tests passing. progress.md created. Ready for Day 8.
 **Left off at:** CLI working (`mix braindump`). All tests passing, clean compile.
 verify.sh is next (Day 9). Product gate getting closer — tool is now usable from
 the terminal.
+
+---
+
+### Day 9 ✅
+**Goal:** First step toward harness engineering — a quality gate the agent can run and interpret, not just a human convenience script
+
+**Completed:**
+- Added credo to mix.exs (dev/test dep), ran `mix deps.get`
+- Built verify.sh: runs `mix compile`, `mix test`, `mix credo` in sequence
+  - Default (lenient): credo issues shown but non-blocking
+  - `--strict` flag: fails on any credo issue (runs 69 checks vs 57 in default)
+- Made verify.sh executable, confirmed it runs cleanly
+- Agent-Y verification: opened a fresh Claude Code session, ran verify.sh cold —
+  reported correctly with no prior context (compile clean, 3 tests passing,
+  3 non-blocking credo issues)
+- Tested `--strict` flag: exits non-zero as expected on existing credo issues
+- Added verify.sh to AGENTS.md CLI section for later discovery
+
+**Key decisions:**
+- Lenient default, `--strict` for hard gate — don't block active development on
+  pre-existing issues, but give a strict mode for CI or handoff
+- Agent-X (coding) runs `mix compile` + `mix test`; Agent-Y (verifier) runs `./verify.sh`
+  — the distinction maps directly to the Bassim Eledath framework
+
+**Lessons learned:**
+- Credo is a static analysis tool for Elixir: checks readability, style, and
+  refactoring opportunities. Alternatives: dialyxir (type checking), sobelow (security).
+  We chose credo because it's fast and gives immediate, actionable feedback.
+- `--strict` enables additional checks beyond the default set — it's not just
+  "fail louder", it's "check more"
+- Agent-Y verification worked in practice: a cold session ran the script and
+  reported accurately with no coaching
+
+**Left off at:** verify.sh committed and verified. All tests passing, clean compile.
+Ready for Day 10.
 
 ---
 
