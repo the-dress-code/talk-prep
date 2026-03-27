@@ -1,8 +1,5 @@
 # AGENTS.md
 
-> **To start a new session:** Open Claude Code CLI in ~/Projects/talk_prep and type:
-> `Read AGENTS.md and follow the start-of-session instructions.`
-
 ## Start of session
 At the start of every session, read these files in this order:
 1. This file (AGENTS.md) — you're reading it now
@@ -36,6 +33,7 @@ Read the files listed below based on when you need them:
 | **docs/product_vision.md** | Feature descriptions, input formats | When building a new feature |
 | **docs/framework.md** | Source articles, level definitions, level-up criteria, principles | During re-evaluation checkpoints (every 3-4 days) |
 | **docs/mcp_notes.md** | MCP decision and rationale | When a capability gap appears |
+| **docs/human_guide.md** | Tool setup, how to start a session, what to expect | For Wendy — update this if tooling or workflow changes |
 | **docs/daily_log_days_1_7_archive.md** | Days 1-7 daily log entries | Only if you need historical context from early sprint |
 
 ## Hard constraints
