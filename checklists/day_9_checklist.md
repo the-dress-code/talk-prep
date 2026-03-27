@@ -5,6 +5,7 @@ Here's your Day 9 checklist:
 **Day 9 — Build verify.sh** *Goal: First harness artifact — built by one agent session, verified by another*
 
 *  Update sprint_log.md Tool Stack section — remove Aider references, Claude Code is now sole agent
+*  Add credo to mix.exs as a dev/test dependency and run `mix deps.get`
 *  Build verify.sh: runs mix compile, mix test, mix credo and reports pass/fail clearly
 *  Make verify.sh executable and confirm it runs cleanly from the terminal
 *  Commit verify.sh to the repo

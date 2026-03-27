@@ -1,15 +1,40 @@
 # Agentic Engineering Sprint Log
 
 ## How to use this file
-Paste this entire file at the start of any new Claude chat session to restore
-full context and resume the sprint exactly where you left off.
-
-**Also read:** progress.md (current state + deferred items) and AGENTS.md
-(constraints + stack). These three files together give a complete picture.
+Read this file, progress.md, and AGENTS.md at the start of every session.
+These three files together give a complete picture: sprint_log has the plan
+and history, progress.md has current state and what's next, AGENTS.md has
+constraints and what the agent needs to know to write code.
 
 ---
 
 ## Session conventions
+
+### Real-time coaching (added Day 10)
+**IMPORTANT — do this during every session, not just when asked:**
+
+1. When Wendy does something that maps to a level, say so immediately.
+   Format: "**Level N — [concept name]:** [what just happened and why it matters]."
+   Example: "**Level 4 — compounding:** You just updated AGENTS.md so the next session won't hit the same problem."
+
+2. When Wendy does something that's an anti-pattern, flag it immediately.
+   Format: "**Anti-pattern — [name]:** [what happened and what should happen instead]."
+   Example: "**Anti-pattern — verbal context:** You just told me something the next session won't know. Should this go in AGENTS.md or progress.md?"
+
+3. When the agent can't do something or misses context from a prior session, flag it as a level gap.
+   Format: "**Level N gap:** [what's missing and how to fix it]."
+   Example: "**Level 4 gap:** I didn't know about X from last session. That should be in AGENTS.md so future sessions pick it up."
+
+4. Every sprint log entry MUST include a "Levels practiced" section at the end.
+
+5. After completing a feature rep, explicitly compare it to the previous rep: what went faster, what the harness caught that it didn't before, what still needs work.
+
+6. Do NOT just agree when Wendy assesses her own progress. Check it against evidence.
+   If she says "the harness is working" but she manually fixed things the harness should
+   have caught, say so. If she says "I think I'm Level 6" but the walk-away test produced
+   broken code, say so. Be honest — Wendy has explicitly asked for this.
+
+### Daily checklist generation
 - At the start of each day's session, generate a printable day checklist
   in the same format as the Day 1 checklist (goal, bullet steps, stretch goal).
 - Follow the style of the Day 1 checklist exactly: opening line "Here's your Day N checklist:",
@@ -37,121 +62,21 @@ full context and resume the sprint exactly where you left off.
 
 ---
 
-## Principles
-- **Agent-Y verifies Agent-X's work.** The agent that writes the code should not be the same agent that writes (or runs) the tests. Same model checking itself shares the same blind spots. When writing tests for new code, use a separate session or a different agent. Day 15 adversarial pattern: one agent writes, a separate agent critiques and verifies.
-
----
-
-## Who I am
-- Functional developer, 2 years experience, stronger in Elixir than Clojure
-- Learning agentic engineering, targeting Level 6 per Bassim Eledath's framework
-- Conference speaker in the FP community (Dutch Clojure Days, May 8, Amsterdam)
-
----
-
-## The project: talk_prep
-A private, local CLI tool that ingests braindump writing and extracts, organizes,
-and maps ideas into a structured talk outline using a local Qwen model.
-Runs entirely locally for privacy — braindumps never leave the machine.
-
-**Repo:** github.com/the-dress-code/talk-prep
-**Local path:** ~/Projects/talk_prep
-
----
-
-## Tool stack
-
-**Current (Day 8+):**
-- Ollama — runs Qwen locally (installed via Homebrew)
-- Qwen qwen2.5-coder-16k — custom model (base qwen2.5-coder:14b, num_ctx 16384)
-- Claude Code — sole coding and orchestration agent
-- Elixir / Mix / OTP
-- req_llm ~> 1.7 (in deps, wired up and working)
-- OLLAMA_API_BASE=http://localhost:11434 (set in ~/.zshrc)
-
-**Phased out (Days 1–7):**
-- Aider 0.86.2 — used to learn context engineering (Level 3) and compounding (Level 4).
-  Phased out Day 8 — Qwen's limitations (inventing content, non-deterministic output)
-  made it a poor fit for Level 5+ work.
-
-**To start a session:**
-```bash
-ollama serve        # if not already running as a service
-cd ~/Projects/talk_prep
-```
-Claude Code handles coding and orchestration from here.
-
-**Practical workflow (current stage):**
-- Claude Code writes and edits code, does not commit
-- Run `./verify.sh` to verify (or `mix compile` and `mix test` during active coding)
-- Commit manually when verify.sh passes
-
----
-
-## The framework
-This sprint is built on three articles. Read them to understand why the plan
-is structured the way it is.
-
-1. **Bassim Eledath — "The 8 Levels of Agentic Engineering"**
-   bassimeledath.com/blog/levels-of-agentic-engineering
-   Levels 3–5 are the foundations. Level 6 (harness engineering + automated
-   feedback loops) is the target. Skipping any level amplifies the mess instead
-   of the work.
-
-2. **OpenAI — "Harness Engineering: Leveraging Codex in an Agent-First World"**
-   openai.com/index/harness-engineering
-   Key insights: agents need feedback loops to self-verify; documentation lives
-   in the repo not in people's heads; constraints beat instructions; AGENTS.md
-   is a table of contents not an encyclopedia.
-
-3. **Anthropic — "Effective Harnesses for Long-Running Agents"**
-   anthropic.com/engineering/effective-harnesses-for-long-running-agents
-   Key insights: initializer agent sets up environment; coding agent makes
-   incremental progress; progress.md bridges sessions; verify before declaring
-   done; test end-to-end not just unit level.
-
----
-
-## Why these levels in this order
-- **Level 3 (context engineering):** control what the agent sees — quality in, quality out
-- **Level 4 (compounding):** each session is smarter than the last
-- **Level 5 (MCP + skills):** give the agent real capabilities beyond file edits
-- **Level 6 (harness engineering):** agent verifies its own work, you step back
-
-**You've reached Level 6 when:** you give the agent a task, walk away, and come
-back to find it either finished and verified — or clearly stuck with a specific
-question. Not silently broken. Not falsely done.
-
----
-
-## The 16-day sprint outline
-*Living document — days may bleed into each other. The "leveled up when"
+## Sprint plan
+*Living document — restructured on Day 10. The "leveled up when"
 criteria matter more than the day count.*
 
-### Week 1 — Environment & Level 3 (Context Engineering)
-- Day 1  ✅  Get environment working (Ollama, Qwen, Aider)
-- Day 2  ✅  Write AGENTS.md, feel the difference context makes
-- Day 3  ✅  Context experiments — too little, too much, just right
-- Day 4  ✅  Build braindump processor with good context
-- Day 5  ✅  Plan review, product vision, revised sprint (Opus session)
+### Sprint context
+- Wendy has 5-6 hours per day for this sprint
+- Talk is already in bullet-point outline format — braindump processor not needed for talk prep
+- Socratic questioner is the highest-value feature for real talk prep right now
+
+### Phase 1 — Environment & Level 3 (Days 1-5) ✅
 
 **Level 3 leveled up when:** you can predict in advance whether a prompt will
-confuse the agent, and you know how to fix it before running it.
+confuse the agent, and you know how to fix it before running it. ✅
 
-### Week 2 — Level 4 & 5 (Compounding + Capabilities)
-- Day 6  ✅  Consolidate + compounding loop — verify braindump output in iex,
-            codify Days 1–5 lessons into AGENTS.md and docs/, clean up
-            AGENTS.md, start progress.md.
-- Day 7  ✅  Carry-overs, attempted compounding test, fixed Aider config,
-            ran processor on more complex braindump
-- Day 8  ✅  Phase out Aider, Claude Code takes over as sole agent. Built
-            `mix braindump` CLI entry point. MCP deferred — no capability
-            gap yet.
-- Day 9  ✅  Build verify.sh (compile + test + credo). First step toward
-            harness engineering. Verified by a fresh Claude Code session
-            (Agent-Y pattern practiced for real).
-- Day 10     Level 4+5 checkpoint — can the agent build on prior sessions?
-            Can it do something it couldn't before?
+### Phase 2 — Level 4 & 5 (Days 6-12)
 
 **Level 4 leveled up when:** you start a session and the agent already "knows"
 things you taught it last week, because you codified them properly.
@@ -159,271 +84,73 @@ things you taught it last week, because you codified them properly.
 **Level 5 leveled up when:** your agent can do something it literally could not
 do before — access a real system, run a real check.
 
-### Week 3 — Level 6 (Harness Engineering)
-- Day 11     Write real ExUnit tests for BraindumpProcessor — not just shape
-            checks but "does the output contain themes from the input?"
-            Split unit tests (no Ollama) from integration tests.
-- Day 12     Full verification loop — Claude Code runs a task, runs verify.sh,
-            interprets results, fixes issues. You watch but don't intervene.
-- Day 13     Walk-away test. Give the agent a task (e.g., add CLI entry point).
-            Step away. Come back and evaluate.
-- Day 14     Build redundancy mapper or Socratic questioner — more complex
-            task for the harness. **Product gate: tool helps with real talk
-            prep, output you'd rehearse from.**
-- Day 15     Adversarial pattern — two-agent review (one writes, one
-            critiques). The Socrates agent concept.
-- Day 16     Level 6 checkpoint + talk prep. Use the full pipeline to
-            generate your actual conference talk outline.
+### Phase 3 — Level 6 via feature reps (Days 13-19+)
+
+**Level 6 leveled up when:** you give the agent a task, walk away, and come
+back to find it either finished and verified — or clearly stuck with a specific
+question. Not silently broken. Not falsely done. And rep 2 goes noticeably
+faster than rep 1.
+
+### Detailed day-by-day plan
+
+**Days 11-12 (Mar 27-28): Upgrade harness + Level 4 validation**
+
+Day 11: Test compounding (Level 4 validation)
+- Open a fresh CLI session — do NOT paste context, just point it at sprint_log
+- Give it a real task (not trivial)
+- Document: what did the agent already "know"? What did it miss?
+- Fix the gaps in AGENTS.md / progress.md so the next session is better
+- This directly addresses the Level 4 question mark
+
+Day 12: Design harness for Socratic questioner
+- Write the feature contract in AGENTS.md (input/output shape, constraints, done criteria)
+- Write test stubs that define expected behavior before any code is written
+- Upgrade verify.sh into a real feedback loop: agent runs it, parses output, decides what to fix, fixes it, re-runs — no human needed
+- By end of day: harness is ready for the agent to build against on Day 13
+- **Re-evaluation checkpoint.** Answer these honestly before moving on:
+  - What Level 4/5 gaps surfaced since last checkpoint? Were they fixed?
+  - Is the harness actually catching problems, or is Wendy still catching them manually?
+  - Is the plan still serving the goal (solid Level 6) or has it drifted?
+  - Does anything need to change for the next 3-4 days?
+
+**Days 13-16 (Mar 29 - Apr 1): Socratic questioner — first full Level 6 rep**
+- Day 13: Agent builds inside the harness. Walk-away test — give the task, step away for real, come back and evaluate
+- Day 14: Evaluate what harness caught and what it missed. Tighten constraints. Agent fixes using improved harness
+- Day 15: Agent-Y adversarial review — separate session critiques the feature. Assess: would you trust this without reviewing every line?
+- Day 16: **Re-evaluation checkpoint.** Answer these honestly before moving on:
+  - What Level 4/5 gaps surfaced since last checkpoint? Were they fixed?
+  - Is the harness actually catching problems, or is Wendy still catching them manually?
+  - Did rep 1 produce something you'd trust without reviewing every line? If not, why?
+  - Is the plan still serving the goal (solid Level 6) or has it drifted?
+  - Does anything need to change for rep 2?
+
+**Days 17-19 (Apr 2-4): Redundancy mapper or modular idea store — second Level 6 rep**
+- Same rep cycle: design harness → agent builds → walk away → evaluate → tighten → adversarial review
+- Should go faster because harness is better. If it doesn't, that reveals what was missed in rep 1
+
+**April 5: Use Socratic questioner on real talk content for April 7 dry run**
+
+**Days 20+ (Apr 6 onward, if time): Third rep, polish, or re-evaluation**
+- Third feature, improve mode, or harness improvements based on what broke in reps 1 and 2
+- **Re-evaluation checkpoint.** Answer these honestly:
+  - Did rep 2 go noticeably faster than rep 1? If not, what's still missing from the harness?
+  - Can Wendy articulate what makes a harness good or bad? Ask her.
+  - Is the Socratic questioner actually useful for the April 7 dry run?
+  - What would Wendy do differently if starting a new project with harness engineering from scratch?
+
+### Key deadlines
+- Mar 31: First dry run (rough — bullet points on slides, 10-20 per act of 3 acts)
+- Apr 5: Socratic questioner ready for real use
+- Apr 7: Second dry run
+- Apr 13: Third dry run
+- Apr 19: Leave for international trip (morning)
+- May 8: Dutch Clojure Days talk, Amsterdam
 
 ---
 
 ## Daily Log
 
-### Day 1 ✅
-**Goal:** Get environment working
-**Completed:**
-- Installed Ollama, pulled qwen2.5-coder:14b
-- Installed Aider 0.86.2 (required Python 3.12, not 3.13 or 3.14)
-- Configured Aider to point at local Qwen via OLLAMA_API_BASE
-- Made first real agent change to jido_lab, auto-committed by Aider
-- Created talk_prep as the new project vehicle, pushed to GitHub
-- Added secrets, editor files, and .aider* to .gitignore
-
-**Key decisions:**
-- Switched project vehicle from jido_lab to talk_prep
-- Local Qwen chosen for privacy — braindumps never leave the machine
-- Aider over Cursor because Level 6 requires CLI-based feedback loops
-
-**Lessons learned:**
-- pipx requires Python 3.12 for aider-chat (3.13 and 3.14 are too new)
-- `q` exits the git log pager (less)
-- `cat` prints file contents to the terminal
-- `echo >>` appends text to a file without opening an editor
-- `git add` is required even for existing files that have been modified
-
-**Left off at:** talk_prep Mix project created and pushed to
-github.com/the-dress-code/talk-prep. sprint_log.md added to project.
-
----
-
-### Day 2 ✅
-**Goal:** Write AGENTS.md, feel the difference context makes
-**Completed:**
-- Updated .gitignore (secrets, macOS, editor, aider entries)
-- Created AGENTS.md with constraints, stack, done criteria, and file map
-- Created checklists/ folder, added Day 1 and Day 2 checklists
-- Ran Aider experiment: asked for a placeholder braindump processor module
-- Observed agent behavior with AGENTS.md in context
-
-**Key decisions:**
-- Checklists stored as markdown in checklists/ and committed to repo
-- Session conventions section added to sprint_log.md so future sessions
-  auto-generate the day's checklist
-
-**Lessons learned:**
-- Location constraints in AGENTS.md held — module landed in the right place
-- "Done means compile + test" constraint was ignored — agent committed without
-  running either command; constraint needs stronger wording
-- Dependency constraint partially failed — agent proposed adding jido and
-  req_llm twice despite being told not to add deps without being asked
-- mix compile can be run in a second terminal tab while Aider stays open
-- Saying N to mix.exs edits twice was enough — agent backed off cleanly
-
-**Stretch goal deferred:** Running the same task without AGENTS.md in context
-carried forward to Day 3 as the opening experiment.
-
-**Left off at:** braindump_processor.ex committed and compiling cleanly.
-AGENTS.md needs stronger verification language before Day 3.
-
----
-
-### Day 3 ✅
-**Goal:** Build the instinct for context — too little, too much, just right
-**Completed:**
-- Ran no-context experiment: agent found correct file location without AGENTS.md
-  but immediately reached for mix.exs
-- Ran too-little-context experiment: same mix.exs failure, confirming constraint
-  was doing real work
-- Ran too-much-context experiment: bloated AGENTS.md buried constraints, same
-  failures as no-context
-- Strengthened verification contract language in AGENTS.md
-- Trimmed AGENTS.md to minimum effective version — cut "Where things live"
-  (repo-map handles it) and git conventions (agent ignores them)
-
-**Key decisions:**
-- Hard constraints and "done" moved to top of AGENTS.md — most important signal
-  should hit the agent first
-- "Where things live" section removed — repo-map makes it redundant
-
-**Lessons learned:**
-- Constraint visibility matters more than constraint presence
-- The repo-map gives the agent enough structural context to land files correctly
-  without explicit guidance
-- The agent reached for mix.exs in every condition — prominence of the constraint
-  matters, not just its presence
-- Bloated AGENTS.md performed no better than empty AGENTS.md
-
-**Left off at:** AGENTS.md trimmed and committed. Verification contract still
-untested — will confirm on Day 4 when we build the real braindump processor.
-
----
-
-### Day 4 ✅
-**Goal:** Build a real braindump ingestion pipeline
-**Completed:**
-- Audited actual codebase — discovered sprint log tool stack was aspirational,
-  not real (Jido was never in deps; req_llm was listed but not installed)
-- Removed placeholder_braindump_processor.ex (Aider-generated, never wired up)
-- Added req_llm ~> 1.7 to mix.exs manually, ran mix deps.get, confirmed clean compile
-- Implemented BraindumpProcessor.process/1 via Aider with AGENTS.md in context
-- Fixed several issues manually after Aider committed: api_key required by
-  req_llm even for Ollama (pass `api_key: "ollama"`), response extraction
-  via ReqLLM.Response.text/1, JSON fence stripping, and explicit prompt structure
-- Added test/fixtures/sample_braindump.txt with real talk content
-- Wrote ExUnit test asserting output shape — all 3 tests passing
-
-**Key decisions:**
-- Jido removed from project description — not in deps, not planned for near term
-- req_llm calls Ollama via `:openai` provider with custom base_url — this is
-  correct; Ollama exposes an OpenAI-compatible API
-- Output shape agreed: `%{raw, themes, claims, summary}` where claims are
-  `%{claim: "...", support: [...]}`
-- Draft Aider prompts in chat before running — prevents vague prompts that
-  produce wrong output shapes
-
-**Lessons learned:**
-- Aider auto-commits by default and ignores "do not commit" instructions —
-  use `--no-auto-commits` flag to disable this; human verifies and commits manually
-- req_llm requires an api_key even for local Ollama — pass `api_key: "ollama"`
-- Use ReqLLM.Response.text/1 to extract text from a response (not response.message.content)
-- Qwen will invent its own JSON schema if not given an explicit one — always
-  specify the exact structure and say "return ONLY the JSON object, no markdown"
-- The sprint log tool stack must reflect reality, not intent — verify against
-  mix.exs before trusting it
-
-**Open / unverified:**
-- BraindumpProcessor.process/1 test passes but return value has not been
-  manually inspected — we have not confirmed that `raw`, `themes`, `claims`,
-  and `summary` are actually populated correctly in practice. Day 6 should
-  include a manual verification step (e.g. run process/1 in iex and inspect
-  the output).
-
-**Left off at:** BraindumpProcessor.process/1 working and tested. Pipeline
-runs end to end: file path in, structured map out. Ready for Day 5 consolidation.
-
----
-
-### Day 5 ✅
-**Goal:** Plan review, product vision, revised sprint (Opus session)
-**Completed:**
-- Brought in Claude Opus for independent assessment of the sprint plan
-- Identified Aider + Qwen ceiling: solid for Levels 3–4, not sufficient for
-  Level 6 autonomous workflows. Plan now uses Claude Code for Levels 5–6.
-- Removed stale Jido references from sprint outline (Days 8, 12)
-- Consolidated Week 2 from 6 days to 5, cut filler (architecture.md for a
-  200-line project, Elixir conventions checker skill)
-- Added two product gates tied to May 8 deadline and April 5 rehearsal target
-- Defined product vision with two modes: Organize (never invent) and Improve
-  (opt-in, AI suggestions allowed). Saved as docs/product_vision.md.
-- Feature list: braindump ingestion, Socratic questioner, abstract → skeleton,
-  redundancy mapper, modular idea store, plus improve mode (TBD)
-
-**Key decisions:**
-- Split agent roles: Aider + Qwen for hands-on coding (L3–4), Claude Code
-  for orchestration and harness engineering (L5–6)
-- "Never invent" is the core product constraint — all features organize the
-  user's own words, except explicit improve mode
-- Verify.sh moved earlier (Day 9) — simpler than originally scoped
-- Test suite split (unit vs integration) deferred until Day 11 when it's needed
-
-**Level assessment:**
-- Level 3: ✅ solid — can predict prompt confusion, knows how to fix it
-- Level 4: partial — sprint log compounds, but agent environment not yet tested
-- Level 5: not yet — no MCP, no external tool access from agents
-- Level 6: not yet — no harness, no walk-away test
-
-**Left off at:** Sprint log updated with revised Days 6–16. Product vision
-documented. Ready for Day 6 consolidation.
-
----
-
-### Day 6 ✅
-**Goal:** Consolidate + compounding loop
-
-**Completed:**
-- Manually verified BraindumpProcessor.process/1 output in iex — confirmed pipeline works end to end
-- Iterated on prompt multiple times based on live output inspection
-- Dropped summary field — Qwen was inventing content, violating core constraint
-- Renamed claims/support → topics/points/details with three-level hierarchy
-- Added needs_points flag to surface topics lacking supporting detail
-- Defined topic/point/detail in the prompt with clear examples
-- Fixed timeout failures — added receive_timeout: 120_000 to LLM call
-- Added @tag timeout: 180_000 to integration test to match LLM timeout
-- Documented Qwen limitations in AGENTS.md and product_vision.md
-- Set up macOS Glass sound notification hook in Claude Code global settings
-
-**Key decisions:**
-- Skip code comments for Qwen limitations — docs are the right home, code comments go stale
-- "Never invent" remains the product goal; Qwen partial invention is a tolerated limitation, not accepted behavior
-- Output shape: %{raw, themes, topics} where topics have points (with details) and needs_points flag
-
-**Lessons learned:**
-- recompile() in iex is required to pick up changes compiled in another terminal — without it you are testing old code
-- Qwen is non-deterministic — run multiple times before concluding a prompt change helped or hurt
-- Qwen invents topic labels despite instructions; this is a model limitation not a prompt problem
-- Complex prompts (3-level hierarchy) require receive_timeout: 120_000 or Qwen times out
-- ExUnit default timeout (60s) is shorter than our LLM receive_timeout — integration tests need @tag timeout
-
-**Open / carry to Day 7:**
-- needs_points always returns false — Qwen not flagging topics that lack points
-- Topic labels use Qwen's phrasing, not speaker's verbatim words — revisit with better model
-- Compounding test not done — did not open fresh Aider session to compare Day 2 behavior
-- progress.md not started
-- AGENTS.md cleanup not done
-
-**Left off at:** BraindumpProcessor producing useful topic/point/detail structure.
-Prompt iteration paused — output is good enough to work with. All tests passing.
-Ready for Day 7.
-
----
-
-### Day 7 ✅
-**Goal:** Carry-overs + attempted compounding test
-
-**Completed:**
-- Cleaned up AGENTS.md: added output shape, known issues, code notes
-- Created progress.md for session bridging
-- Attempted compounding test: asked Aider to add a function. Qwen rewrote
-  the entire file every time. Initially blamed the model — human pushed back
-  ("are you sure it can't do this?"). Root cause: Ollama's default 2048 token
-  context was dropping Aider's system prompt. Fixed with custom model
-  (qwen2.5-coder-16k, num_ctx 16384) + --edit-format diff. Qwen then
-  produced a clean surgical edit.
-- After fixing config, Claude Code wrote topics_with_no_points/1 directly
-  instead of letting Aider try again. Wrong call — skipped the chance to
-  validate the fix and undermined the point of using Aider.
-- Ran processor on more complex braindump (~150 lines, mix of talk content and
-  meta-conversation). Output was usable — product gate looking achievable.
-- Bumped receive_timeout to 300_000 for larger inputs
-
-**Key decisions:**
-- Aider launch: `aider --model ollama/qwen2.5-coder-16k --no-auto-commits --edit-format diff`
-
-**Lessons learned:**
-- Investigate config before blaming the model
-- Claude Code jumped to "Qwen can't do this" after 2 attempts because it
-  matched a prior assessment. Human pushback found the real fix.
-- Claude Code should not write code that Aider should be writing — defeats
-  the purpose of the agentic workflow
-
-**Open / carry to Day 8:**
-- Compounding test still needed — got sidetracked by config fix. Need a clean
-  test with fixed Aider: does AGENTS.md make the agent better across sessions?
-- Decide if Aider + Qwen is still the right tool for code changes now that
-  Claude Code is in the picture
-
-**Left off at:** Aider config fixed. Processor working on more complex braindump.
-All tests passing. progress.md created. Ready for Day 8.
+*Days 1-7 archived to docs/daily_log_days_1_7_archive.md — lessons are captured in current docs.*
 
 ---
 
@@ -499,15 +226,81 @@ Ready for Day 10.
 
 ---
 
+### Day 10 ✅
+**Goal:** Re-evaluate sprint plan — is it actually going to produce solid Level 6?
+
+**Completed:**
+- Re-read all three source articles (Bassim Levels of Agentic Engineering, OpenAI Harness Engineering, Anthropic Effective Harnesses) and all project docs (product_vision.md, AGENTS.md, progress.md)
+- Audited current plan against Level 6 criteria. Found critical gaps:
+  - Only 1 new feature planned across 7 remaining days — not enough reps to build muscle memory
+  - Most remaining days were checkpoints and observation, not building
+  - Project too small (one module, one CLI command) to stress-test harness engineering
+  - verify.sh is a gate (pass/fail), not a feedback loop — a real feedback loop means the agent runs verify.sh, parses the output, decides what to fix, fixes it, and re-runs verify.sh without human intervention
+  - Walk-away test (Day 13) had nothing complex enough to fail in interesting ways
+- Assessed readiness for each level:
+  - Level 3: ✅ solid
+  - Level 4: ⚠️ partial — compounding mechanism exists (sprint_log, progress.md, AGENTS.md) but never tested: does a fresh session actually pick up prior context without hand-holding?
+  - Level 5: ⚠️ partial — verify.sh is the only new capability. One capability isn't a pattern.
+  - Decision: don't gate on 4-5 completion. They'll surface naturally during Level 6 feature builds. Address in the moment.
+- Restructured Days 11-19+ around building 2-3 real features as Level 6 rep cycles
+- Settled tooling after extensive discussion (see Tool setup section below)
+- Agreed on real-time level callouts: Claude flags Level 3-6 behaviors and anti-patterns during builds, naming the specific level and article concept, to build vocabulary alongside skills
+- Agreed on anti-pattern callouts: Claude flags when Wendy manually fixes something the harness should catch, gives context verbally that should be in the repo, etc.
+- Added recurring daily check: "Did I hit a Level 4 or Level 5 gap today? What was it? How did I fix it?"
+- End-of-day sprint log entries will include a "Levels practiced" section going forward
+- Between reps: explicitly compare rep 1 to rep 2 — did harness improve? Did you catch things faster? That's proof of leveling up.
+
+**Key decisions:**
+- Target confirmed: solid Level 6 — not "can describe it" but "can do it, knows when it's working vs. broken"
+- Each feature is a full Level 6 rep cycle:
+  1. **Design harness** — write feature contract in AGENTS.md (input/output shape, constraints, done criteria), write test stubs that define expected behavior, update verify.sh if needed
+  2. **Agent builds** — agent writes the code inside the harness constraints, runs verify.sh, interprets failures, self-corrects
+  3. **Walk away** — give the agent the task, leave for real, come back and evaluate
+  4. **Evaluate** — what did the harness catch? What did it miss? What broke silently?
+  5. **Tighten** — fix the harness gaps found in step 4 (add tests, strengthen constraints, improve verify.sh)
+  6. **Adversarial review** — fresh session (Agent-Y) critiques the feature cold. Would you trust this without reviewing every line?
+- Feature priority: (1) Socratic questioner — most useful for talk prep right now, (2) redundancy mapper, (3) modular idea store (tied for 2nd)
+- Rep 2 should go noticeably faster than rep 1 — if it doesn't, that reveals what was missed in rep 1
+
+**Lessons learned:**
+- The project was too small to stress-test harness engineering — can't evaluate if a harness works when nothing is complex enough to break without it
+- verify.sh is a gate, not a feedback loop — Level 6 requires the agent to interpret failure and act, not just report pass/fail
+- A walk-away test needs a task complex enough to fail in interesting ways
+- Tool choice should optimize for the end-state workflow you'll use after the sprint, not just sprint comfort
+- Wendy needs vocabulary alongside skills — being able to name what she's doing (e.g., "that's mechanical enforcement from the OpenAI article") is part of leveling up for professional conversations with colleagues
+
+**Tool setup (settled after discussion):**
+
+| Tool | When | Model |
+|---|---|---|
+| Claude Code CLI | Daily sessions — planning, building, evaluating, everything | Sonnet |
+| VS Code (no Claude extension) | Open alongside CLI to read/review code and diffs | — |
+| Claude Code Desktop | Only for deep strategic thinking sessions (like today) | Opus |
+
+Why CLI as primary:
+- Level 6 requires agent autonomy — agent runs bash, interprets results, self-corrects
+- CLI is built for this; VS Code extension is an AI coding assistant, not an autonomous agent
+- Each daily session is fresh — agent reads sprint_log to restore context
+- Old CLI account access doesn't matter — sessions are stateless, context comes from sprint_log
+
+Why not more tools:
+- Context loss between tools is a real cost
+- Switching mid-day breaks continuity
+- Sprint log is a strong enough context bridge that Sonnet can handle planning too
+
+**Action items for upcoming days:**
+- [ ] Customize Claude Code CLI terminal font/theme for comfort (~5 min)
+- [ ] Claude does real-time level callouts during all builds (Level N, concept name, article source)
+- [ ] Claude flags anti-patterns in the moment (manually fixing what the harness should catch, verbal context that should be in repo, etc.)
+- [ ] Every sprint log entry includes "Levels practiced" section
+- [ ] Between reps: explicit comparison — what improved, what didn't
+
+**Left off at:** Plan restructured. No code changes today. Ready for Day 11.
+
+---
+
 ## Open questions
 - needs_points flag always false — Qwen limitation (confirmed)
 - ~~Is Aider + Qwen still worth it now that Claude Code is in the picture?~~
   **Resolved Day 8:** No. Phased out. See Day 8 log.
 
-## Real deadline context
-The first real use of talk_prep is the Dutch Clojure Days talk,
-May 8, Amsterdam. Talk title: "Clojure as Your First Language:
-Shaping a Functional Mindset". This is a 45-minute talk for a
-beginner-friendly audience. Details still forthcoming from the
-conference. Rehearsal target: April 5. The tool needs to be useful
-enough to actually help with this talk before May 8.

@@ -1,6 +1,6 @@
 # progress.md
 
-Last updated: 2026-03-25 (Day 9)
+Last updated: 2026-03-26 (Day 10)
 
 ## What works
 - BraindumpProcessor.process/1 — file path in, structured map out
@@ -25,5 +25,24 @@ Last updated: 2026-03-25 (Day 9)
   preview, external services). Details in docs/mcp_notes.md.
 
 ## What's next
-- Day 10: Level 4+5 checkpoint — can the agent build on prior sessions? Can it do something it couldn't before?
-- Product gate: process real talk content and get output you'd actually use (CLI exists, verify.sh in place — getting close)
+- Day 11: Test compounding (Level 4 validation) — fresh CLI session, real task, does the agent pick up context?
+- Day 12: Upgrade harness for Socratic questioner — write feature contract in AGENTS.md, write test stubs, upgrade verify.sh into a real feedback loop
+- Days 13-16: Build Socratic questioner as first full Level 6 rep cycle (see AGENTS.md "Current sprint phase" for the rep cycle steps)
+- Days 17-19: Second Level 6 rep (redundancy mapper or modular idea store)
+- April 5: Socratic questioner ready for real talk prep use
+
+### Socratic questioner (next feature)
+When a topic or claim in a braindump lacks supporting evidence, ask the user
+leading questions to draw it out. Store answers for later use. Never invent —
+questions help the user surface their own knowledge. Full description in
+product_vision.md. Feature contract will be written in AGENTS.md on Day 12.
+
+## Tool setup (settled Day 10)
+- Claude Code CLI (Sonnet) — primary daily tool for everything
+- VS Code — open alongside for reading code/diffs
+- Claude Code Desktop (Opus) — deep strategic sessions only
+
+## Session conventions (added Day 10)
+**READ sprint_log.md "Real-time coaching" section before starting any task.**
+It has numbered rules for level callouts, anti-pattern flagging, and pushback
+that must be followed every session. These are not optional.
