@@ -15,7 +15,7 @@ Session flow:
 2. Determine what sprint day it is and what the plan says to do
 3. Generate the day's checklist (see sprint_log.md session conventions)
 4. Work through the day's tasks, doing real-time coaching callouts throughout
-5. At end of day: update sprint_log with the day's log entry (including "Levels practiced" section), update progress.md, ask Wendy to confirm, then generate Slack check-in
+5. At end of day: update sprint_log with the day's log entry (including "Levels practiced" section), update progress.md, if tooling or workflow changed update docs/human_guide.md, ask Wendy to confirm, then generate Slack check-in
 
 ## What this project is
 talk_prep is a private, local CLI tool that ingests braindump writing and
