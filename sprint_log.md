@@ -93,7 +93,7 @@ faster than rep 1.
 
 ### Detailed day-by-day plan
 
-**Days 11-12 (Mar 27-28): Upgrade harness + Level 4 validation**
+**Days 11-12: Level 4 validation + harness prep**
 
 Day 11: Test compounding (Level 4 validation)
 - Open a fresh CLI session — do NOT paste context, just point it at sprint_log
@@ -102,18 +102,17 @@ Day 11: Test compounding (Level 4 validation)
 - Fix the gaps in AGENTS.md / progress.md so the next session is better
 - This directly addresses the Level 4 question mark
 
-Day 12: Design harness for Socratic questioner
-- Write the feature contract in AGENTS.md (input/output shape, constraints, done criteria)
-- Write test stubs that define expected behavior before any code is written
-- Upgrade verify.sh into a real feedback loop: agent runs it, parses output, decides what to fix, fixes it, re-runs — no human needed
-- By end of day: harness is ready for the agent to build against on Day 13
+Day 12: Upgrade verify.sh into a feedback loop ✦ harness design done on Day 11
+- Feature contract and test stubs are already written — do not redo this
+- Upgrade verify.sh so the agent can run it, parse the output, decide what to fix, fix it, and re-run — no human needed
+- By end of day: verify.sh is a feedback loop, not just a gate
 - **Re-evaluation checkpoint.** Answer these honestly before moving on:
   - What Level 4/5 gaps surfaced since last checkpoint? Were they fixed?
   - Is the harness actually catching problems, or is Wendy still catching them manually?
   - Is the plan still serving the goal (solid Level 6) or has it drifted?
   - Does anything need to change for the next 3-4 days?
 
-**Days 13-16 (Mar 29 - Apr 1): Socratic questioner — first full Level 6 rep**
+**Days 13-16: Socratic questioner — first full Level 6 rep**
 - Day 13: Agent builds inside the harness. Walk-away test — give the task, step away for real, come back and evaluate
 - Day 14: Evaluate what harness caught and what it missed. Tighten constraints. Agent fixes using improved harness
 - Day 15: Agent-Y adversarial review — separate session critiques the feature. Assess: would you trust this without reviewing every line?
@@ -124,7 +123,7 @@ Day 12: Design harness for Socratic questioner
   - Is the plan still serving the goal (solid Level 6) or has it drifted?
   - Does anything need to change for rep 2?
 
-**Days 17-19 (Apr 2-4): Redundancy mapper or modular idea store — second Level 6 rep**
+**Days 17-19: Redundancy mapper or modular idea store — second Level 6 rep**
 - Same rep cycle: design harness → agent builds → walk away → evaluate → tighten → adversarial review
 - Should go faster because harness is better. If it doesn't, that reveals what was missed in rep 1
 
@@ -139,7 +138,9 @@ Day 12: Design harness for Socratic questioner
   - What would Wendy do differently if starting a new project with harness engineering from scratch?
 
 ### Key deadlines
-- Mar 31: First dry run (rough — bullet points on slides, 10-20 per act of 3 acts)
+*Day 11 = Mar 31. Use this as an anchor to orient sprint day numbers to calendar dates.*
+
+- Mar 31: First dry run ✅ (rough — bullet points on slides, 10-20 per act of 3 acts)
 - Apr 5: Socratic questioner ready for real use
 - Apr 7: Second dry run
 - Apr 13: Third dry run
@@ -151,6 +152,47 @@ Day 12: Design harness for Socratic questioner
 ## Daily Log
 
 *Days 1-7 archived to docs/daily_log_days_1_7_archive.md — lessons are captured in current docs.*
+
+---
+
+### Day 11 ✅
+**Goal:** Test compounding (Level 4 validation) — fresh session, real task, no hand-holding
+
+**Completed:**
+- Tested whether compounding is working: opened a fresh session with no hand-holding, pointed it at the three core files, and checked whether it had enough context to operate without Wendy explaining anything. It did — stack, constraints, sprint day, what's next, and session conventions were all picked up automatically
+- Identified one Level 4 gap: Socratic questioner feature details lived only in product_vision.md, not reachable from the core read list. Fix: write a self-contained feature contract in AGENTS.md (which is today's work)
+- Designed Socratic questioner feature contract collaboratively with Wendy — settled two invocation modes, interaction loop, exit signals, storage format and location, edge cases
+- Wrote feature contract into AGENTS.md — fully self-contained, includes pointer to product_vision.md co-located with the work
+- Wrote test stubs in test/socratic_questioner_test.exs — 9 tests, all failing "not implemented." Verified: tests compile and run (`mix test` exits with failures, not compile errors). Logic is not yet verified — that only happens when an implementation runs against them on Day 13
+- Created skeleton module lib/talk_prep/socratic_questioner.ex so tests compile cleanly
+- Updated progress.md and AGENTS.md to reflect current state
+- End-of-day session flow tightened: AGENTS.md now lists every file to check by name with explicit consistency checks — no more "update the docs" ambiguity
+- Created learning/ folder with plain-language explanations of concepts covered: what a harness is, Level 4 compounding, what a test stub is. Learning review is now a required end-of-day step in AGENTS.md session flow
+- Removed 3 stale worktrees (adoring-neumann, blissful-greider, tender-dhawan) left over from prior sessions — all were at old commits already in main, no work lost
+- Clarified file organization convention: root level = files every session reads; docs/ = reference files read only when needed. Distinction matters so "update the docs" is never misinterpreted
+- Set up iTerm2 Claude Code profile: background #1e1e1e, foreground #e8e4d9, Menlo 12pt, line spacing 115. Documented in docs/human_guide.md (provisional — evaluating after Day 12)
+
+**Key decisions:**
+- Two invocation modes: Mode 2 (MVP) — `mix socratic --claim "..."` questions a single claim directly. Mode 1 (after MVP) — `mix braindump <file>` processes a file and then optionally hands off to the Socratic questioner to question flagged claims
+- Mode 2 first because it's simpler and independently testable; Mode 1 adds a detection layer on top
+- Storage: one JSON file per session in sessions/, timestamped. JSON is the persistent artifact; terminal displays formatted markdown during the session
+- `done` saves and advances to next claim; `skip` skips without saving; ctrl+c saves completed claims so far; empty answer re-prompts once then treats as skip
+- Once the feature contract is in AGENTS.md, future sessions don't need product_vision.md — the contract has everything. No separate fix needed.
+
+**Lessons learned:**
+- Level 4 gap identification: the right fix is co-location (instructions live next to the work), not updating a general read list
+- Test stubs define the contract in executable form — `mix test` gives red/green feedback on each function. But stubs are unproven until an implementation runs against them
+- The compiler's type warnings on skeleton modules are expected — they flag that functions always raise, and disappear when functions are implemented
+- "Update the docs" is too vague as an instruction — agents need specific file names and explicit consistency checks or errors creep in undetected
+- Worktrees from prior sessions can accumulate silently and are visible in VS Code — run `git worktree list` if something looks off
+- iTerm2 and Claude Code themes are independent layers: iTerm2 controls the window, `/theme` controls Claude's output rendering. Both need to be set to work together
+- Learning reviews at end of session (before Slack check-in) are more effective than mid-session — concepts are fresh from the work just done
+
+**Left off at:** Harness complete. learning/ folder created. Documentation tightened. iTerm2 profile set up. Day 12: upgrade verify.sh into a feedback loop. Day 13: agent builds the Socratic questioner.
+
+**Levels practiced:**
+- Level 4 — compounding: session started cold with full context; gap identified and fixed so next session won't hit it
+- Level 6 step 1 — harness design: feature contract written, test stubs in place, skeleton module compiling
 
 ---
 

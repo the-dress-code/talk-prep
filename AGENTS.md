@@ -15,7 +15,15 @@ Session flow:
 2. Determine what sprint day it is and what the plan says to do
 3. Generate the day's checklist (see sprint_log.md session conventions)
 4. Work through the day's tasks, doing real-time coaching callouts throughout
-5. At end of day: update sprint_log with the day's log entry (including "Levels practiced" section), update progress.md, if tooling or workflow changed update docs/human_guide.md, ask Wendy to confirm, then generate Slack check-in
+5. End-of-day documentation — do all of the following before asking Wendy to confirm:
+   - **sprint_log.md** — add today's log entry (goal, completed, key decisions, lessons learned, left off at, levels practiced). Do not overstate or abstract — write what actually happened.
+   - **progress.md** — update "What works," "Known issues," "What's next." Ensure test status is accurate (e.g. if stubs are failing, say so).
+   - **AGENTS.md** — update the feature contract, sprint phase, or any constraints that changed today.
+   - **docs/human_guide.md** — update if tooling or workflow changed.
+   - **Consistency check** — before presenting for review, verify: no stale dates, no duplicate content across files, no claims that contradict the current state of the repo, sprint plan reflects what actually happened (not what was originally planned).
+   - Present the Day N log entry to Wendy and ask her to confirm before proceeding.
+6. Learning review: explain any new concepts from today's session in plain language. Write them to learning/ if not already there. Ask Wendy to explain one back in her own words.
+7. Generate Slack check-in
 
 ## What this project is
 talk_prep is a private, local CLI tool that ingests braindump writing and
@@ -66,11 +74,63 @@ We are building features as Level 6 (harness engineering) rep cycles. Each rep:
 5. Tighten — fix harness gaps (add tests, strengthen constraints, improve verify.sh)
 6. Adversarial review — fresh session critiques the feature cold
 
-**Next feature: Socratic questioner** (Days 12-16)
-When a topic or claim in a braindump lacks supporting evidence, ask the user
-leading questions to draw it out. Store answers for later use. Core constraint
-still applies: never invent, only organize — questions help the user surface
-their own knowledge. See docs/product_vision.md for full description.
+**Next feature: Socratic questioner** (Days 11-16)
+
+Read docs/product_vision.md §2 before building this feature.
+
+### Feature contract
+
+**Core constraint:** Never invent, only organize. Questions help the user
+surface their own knowledge — the questioner never suggests answers.
+
+**MVP scope:** Mode 2 (single claim) first. Mode 1 (pipeline) after Mode 2 works.
+
+#### Mode 2 — single claim (MVP)
+```
+mix socratic --claim "some claim string"
+```
+Directly questions a specific claim. No detection step needed.
+
+#### Mode 1 — pipeline (after MVP)
+`mix braindump <file>` processes and prints readable output, then prompts:
+"Question any claims? (y/n)". If yes, passes the already-processed map to
+the Socratic questioner. No re-processing. Key distinction: supporting
+evidence ≠ details — a point can have sub-bullets and still be an unsupported
+assertion. Requires a separate LLM call per topic/point to detect unsupported claims.
+
+#### Interaction loop
+1. Present claim + first question
+2. User answers
+3. LLM generates follow-up or pushback based on answer
+4. Repeat until user types `done` or `skip`
+5. Move to next claim automatically
+
+Exit signals:
+- `done` — save current claim's Q&A, move to next claim
+- `skip` — skip current claim without saving, move to next
+- ctrl+c — save completed claims so far, print filename, exit
+- empty answer — re-prompt once, then treat as skip
+
+#### Output shape per claim
+```elixir
+%{
+  claim: "string",
+  exchanges: [%{question: "string", answer: "string"}]
+}
+```
+
+#### Storage
+- Location: `sessions/` directory at project root — create it if it doesn't exist
+- One JSON file per session, timestamped: `sessions/socratic_YYYY-MM-DDTHH-MM.json`
+- All Q&A pairs grouped by claim
+- No file written if no claims were completed
+
+#### Done criteria
+- `mix socratic --claim "..."` questions a claim end to end
+- `done` / `skip` / ctrl+c all behave as specified
+- Session file saved to `sessions/` with correct JSON structure
+- No file written when session produces no completed claims
+- `mix compile` and `mix test` pass
 
 ## Current output shape
 BraindumpProcessor.process/1 returns:

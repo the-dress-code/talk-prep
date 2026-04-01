@@ -4,11 +4,11 @@ Quick reference for Wendy — what to open, what to type, what to expect.
 
 ## Tool setup
 
-| Tool | When |
-|---|---|
-| Claude Code CLI (Sonnet) | Daily sessions — planning, building, evaluating, everything |
-| VS Code | Open alongside to read code and review diffs |
-| Claude Code Desktop (Opus) | Only for deep strategic thinking — like the Day 10 plan restructure |
+| Tool                       | When
+|----------------------------|--------------------------------------------------------------------
+| Claude Code CLI (Sonnet)   | Daily sessions — planning, building, evaluating, everything
+| VS Code                    | Open alongside to read code and review diffs
+| Claude Code Desktop (Opus) | Only for deep strategic thinking — like the Day 10 plan restructure
 
 ## Starting a new day
 
@@ -31,6 +31,16 @@ Two terminals:
 
 VS Code open alongside for reading code.
 
-## Customization (optional, ~5 min)
+## iTerm2 profile for Claude Code sessions
 
-Change your terminal font/theme for CLI comfort if the default feels too sterile.
+Create a separate iTerm2 profile called `Claude Code` so your Claude sessions look different from your mix/terminal tabs.
+
+**To open a tab with this profile:** iTerm2 menu → Profiles → Claude Code
+
+**Current settings (provisional — still evaluating after Day 11):**
+- Background: `#1e1e1e` (warm dark grey)
+- Foreground: `#e8e4d9` (warm off-white)
+- Font: Menlo 12pt
+- Line spacing: 115
+
+**To refine:** run a full session and see how large blocks of back-and-forth text feel. Update this file with whatever you land on.

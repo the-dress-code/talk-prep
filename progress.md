@@ -1,6 +1,6 @@
 # progress.md
 
-Last updated: 2026-03-26 (Day 10)
+Last updated: 2026-03-31 (Day 11)
 
 ## What works
 - BraindumpProcessor.process/1 — file path in, structured map out
@@ -9,9 +9,10 @@ Last updated: 2026-03-26 (Day 10)
 - Ollama + Qwen pipeline runs end to end via req_llm
 - `mix braindump <file>` — CLI entry point, processes file and prints readable output
 - Tested on real talk content — produced usable output
-- All tests passing (unit + integration), clean compile with no warnings
+- All pre-existing tests passing. 9 Socratic questioner stubs failing "not implemented" — expected, harness is in place
 - Claude Code is the sole agent (Aider + Qwen phased out Day 8)
 - verify.sh — full quality gate (compile + test + credo), lenient default, `--strict` opt-in
+- Socratic questioner harness — feature contract in AGENTS.md, test stubs in test/socratic_questioner_test.exs, skeleton module in lib/talk_prep/socratic_questioner.ex
 
 ## Known issues
 - needs_points flag always returns false — Qwen limitation, not a code bug
@@ -25,22 +26,16 @@ Last updated: 2026-03-26 (Day 10)
   preview, external services). Details in docs/mcp_notes.md.
 
 ## What's next
-- Day 11: Test compounding (Level 4 validation) — fresh CLI session, real task, does the agent pick up context?
-- Day 12: Upgrade harness for Socratic questioner — write feature contract in AGENTS.md, write test stubs, upgrade verify.sh into a real feedback loop
+- Day 12: Upgrade verify.sh into a feedback loop (agent runs, parses output, self-corrects without human)
 - Days 13-16: Build Socratic questioner as first full Level 6 rep cycle (see AGENTS.md "Current sprint phase" for the rep cycle steps)
 - Days 17-19: Second Level 6 rep (redundancy mapper or modular idea store)
 - April 5: Socratic questioner ready for real talk prep use
 
 ### Socratic questioner (next feature)
-When a topic or claim in a braindump lacks supporting evidence, ask the user
-leading questions to draw it out. Store answers for later use. Never invent —
-questions help the user surface their own knowledge. Full description in
-product_vision.md. Feature contract will be written in AGENTS.md on Day 12.
-
-## Tool setup (settled Day 10)
-- Claude Code CLI (Sonnet) — primary daily tool for everything
-- VS Code — open alongside for reading code/diffs
-- Claude Code Desktop (Opus) — deep strategic sessions only
+Feature contract is written — see AGENTS.md. Test stubs are in
+test/socratic_questioner_test.exs. Skeleton module is in
+lib/talk_prep/socratic_questioner.ex. Run `mix test` to see what needs
+implementing. Build starts Day 13.
 
 ## Session conventions (added Day 10)
 **READ sprint_log.md "Real-time coaching" section before starting any task.**
