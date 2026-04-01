@@ -23,6 +23,9 @@ Quick reference for Wendy — what to open, what to type, what to expect.
 - During builds, agent calls out Level 3-6 behaviors and anti-patterns in real time
 - At end of day: agent updates sprint_log and progress.md, asks you to confirm, then generates a Slack check-in
 
+## Caution: concurrent sessions
+Only run one Claude Code session in this repo at a time. Two sessions open simultaneously can overwrite each other's changes to `.claude/settings.local.json`. If permissions disappear unexpectedly, check whether another session is running.
+
 ## Terminal setup
 
 Two terminals:

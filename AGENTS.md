@@ -21,6 +21,9 @@ Session flow:
    - **AGENTS.md** — update the feature contract, sprint phase, or any constraints that changed today.
    - **docs/human_guide.md** — update if tooling or workflow changed.
    - **Consistency check** — before presenting for review, verify: no stale dates, no duplicate content across files, no claims that contradict the current state of the repo, sprint plan reflects what actually happened (not what was originally planned).
+   - **Questions are questions** — when Wendy asks a question, answer it. Do not assume it is a criticism or jump to fixing something. If she means to correct something, she will say so.
+   - **Overstatement check** — before presenting, re-read the log and ask: does each line reflect what actually happened, or does it sound better than reality? Watch for "verified," "confirmed," "works end-to-end" when there were caveats. Write what actually happened, including what Wendy had to catch or correct.
+   - **Gap check** — before presenting, ask yourself: what are we missing? Surface it proactively. Do not wait for Wendy to ask.
    - Present the Day N log entry to Wendy and ask her to confirm before proceeding.
 6. Learning review: explain any new concepts from today's session in plain language. Write them to learning/ if not already there. Ask Wendy to explain one back in her own words.
 7. Generate Slack check-in
@@ -42,6 +45,7 @@ Read the files listed below based on when you need them:
 | **docs/framework.md** | Source articles, level definitions, level-up criteria, principles | During re-evaluation checkpoints (every 3-4 days) |
 | **docs/mcp_notes.md** | MCP decision and rationale | When a capability gap appears |
 | **docs/human_guide.md** | Tool setup, how to start a session, what to expect | For Wendy — update this if tooling or workflow changes |
+| **docs/socratic_questioner_contract.md** | Full feature contract: modes, interaction loop, storage, done criteria | Before building the Socratic questioner |
 | **docs/daily_log_days_1_7_archive.md** | Days 1-7 daily log entries | Only if you need historical context from early sprint |
 
 ## Hard constraints
@@ -65,9 +69,19 @@ Do not commit unless asked.
 - `mix braindump <path/to/file.txt>` — processes a braindump and prints structured output
 - `./verify.sh` — full quality gate (compile + test + credo). Pass `--strict` to fail on any credo issue.
 
+## verify.sh feedback loop protocol
+When verify.sh fails, follow this order — do not deviate:
+1. Run `./verify.sh` first. Do not read source files yet.
+2. Read the SUMMARY block at the bottom of the output — it tells you which phase failed.
+3. Read the output above the `[PHASE: FAIL]` label — it tells you the specific error and file location.
+4. Go to that file and fix only what the error describes.
+5. Re-run `./verify.sh`. Repeat until SUMMARY shows no FAILs.
+
+Do not read source files broadly before running verify.sh. The script is the entry point, not a confirmation step.
+
 ## Current sprint phase
 We are building features as Level 6 (harness engineering) rep cycles. Each rep:
-1. Design harness — write feature contract in AGENTS.md (input/output shape, constraints, done criteria), write test stubs, update verify.sh if needed
+1. Design harness — write feature contract in docs/ (input/output shape, constraints, done criteria), add pointer in AGENTS.md, write test stubs, update verify.sh if needed
 2. Agent builds inside the harness — runs verify.sh, interprets failures, self-corrects
 3. Walk-away test — agent works autonomously on the task
 4. Evaluate — what did the harness catch? What did it miss?
@@ -76,61 +90,10 @@ We are building features as Level 6 (harness engineering) rep cycles. Each rep:
 
 **Next feature: Socratic questioner** (Days 11-16)
 
-Read docs/product_vision.md §2 before building this feature.
-
-### Feature contract
-
-**Core constraint:** Never invent, only organize. Questions help the user
-surface their own knowledge — the questioner never suggests answers.
-
-**MVP scope:** Mode 2 (single claim) first. Mode 1 (pipeline) after Mode 2 works.
-
-#### Mode 2 — single claim (MVP)
-```
-mix socratic --claim "some claim string"
-```
-Directly questions a specific claim. No detection step needed.
-
-#### Mode 1 — pipeline (after MVP)
-`mix braindump <file>` processes and prints readable output, then prompts:
-"Question any claims? (y/n)". If yes, passes the already-processed map to
-the Socratic questioner. No re-processing. Key distinction: supporting
-evidence ≠ details — a point can have sub-bullets and still be an unsupported
-assertion. Requires a separate LLM call per topic/point to detect unsupported claims.
-
-#### Interaction loop
-1. Present claim + first question
-2. User answers
-3. LLM generates follow-up or pushback based on answer
-4. Repeat until user types `done` or `skip`
-5. Move to next claim automatically
-
-Exit signals:
-- `done` — save current claim's Q&A, move to next claim
-- `skip` — skip current claim without saving, move to next
-- ctrl+c — save completed claims so far, print filename, exit
-- empty answer — re-prompt once, then treat as skip
-
-#### Output shape per claim
-```elixir
-%{
-  claim: "string",
-  exchanges: [%{question: "string", answer: "string"}]
-}
-```
-
-#### Storage
-- Location: `sessions/` directory at project root — create it if it doesn't exist
-- One JSON file per session, timestamped: `sessions/socratic_YYYY-MM-DDTHH-MM.json`
-- All Q&A pairs grouped by claim
-- No file written if no claims were completed
-
-#### Done criteria
-- `mix socratic --claim "..."` questions a claim end to end
-- `done` / `skip` / ctrl+c all behave as specified
-- Session file saved to `sessions/` with correct JSON structure
-- No file written when session produces no completed claims
-- `mix compile` and `mix test` pass
+Harness design is complete (Days 11-12). Day 13: go straight to building.
+Feature contract: **docs/socratic_questioner_contract.md** — read this before building.
+Test stubs: test/socratic_questioner_test.exs — 9 tests, all failing "not implemented."
+Skeleton module: lib/talk_prep/socratic_questioner.ex — implement the functions, run verify.sh, self-correct from output.
 
 ## Current output shape
 BraindumpProcessor.process/1 returns:

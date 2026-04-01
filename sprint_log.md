@@ -155,6 +155,38 @@ Day 12: Upgrade verify.sh into a feedback loop ✦ harness design done on Day 11
 
 ---
 
+### Day 12 ✅
+**Goal:** Upgrade verify.sh into a feedback loop — agent runs it, parses output, decides what to fix, fixes it, re-runs without human involvement.
+
+**Completed:**
+- Upgraded verify.sh: per-phase `[PHASE: PASS/FAIL]` labels, SUMMARY block, Ollama health check. Each phase runs independently; exits non-zero if any fail.
+- Ran partial walk-away test: fresh session picked up Day 12 context correctly (Level 4 working). But agent read source files before running verify.sh, spotted the bug visually, then ran verify.sh to confirm. verify.sh was a confirmation step, not the entry point — the agent bypassed the feedback loop entirely.
+- That revealed the core harness gap: nothing in the repo told the agent to route through verify.sh first. Fixed by adding verify.sh feedback loop protocol to AGENTS.md as a hard constraint — run verify.sh first, read SUMMARY, go to the failing file, fix only what the error describes. Do not read source files first.
+- Re-evaluation checkpoint: worked through all four questions. Key findings: (1) Level 4 compounding is working — fresh session picked up context without coaching. (2) Harness caught nothing today — Wendy caught the gap. (3) Read Bassim article to evaluate whether the plan is serving the goal — it is, and the article validated specific choices (backpressure, constraints over instructions, Agent-Y adversarial review). (4) AGENTS.md at 171 lines was a smell — article says ~100 lines as a table of contents. Moved Socratic questioner feature contract to docs/socratic_questioner_contract.md, pointer in AGENTS.md. Now 122 lines.
+- Mid-session: a concurrent Claude Code session (spun up for the walk-away test) overwrote settings.local.json, removing the WebFetch permissions we had just added. Lost time diagnosing it. Closed the extra session, restored the file. Added caution to human_guide.md: one session at a time in this repo.
+- Added three session flow rules to AGENTS.md: questions are questions, overstatement check, gap check.
+
+**What actually happened vs. what was claimed:** Called it "Level 5 new capability" mid-session — premature. Output format improved and Ollama check added. Autonomous self-correction from verify.sh output alone was not proven. The protocol is in AGENTS.md but hasn't been re-tested yet.
+
+**Key decisions:**
+- Feature contracts belong in docs/ with a pointer in AGENTS.md — not embedded. AGENTS.md is a table of contents.
+- verify.sh protocol is a hard constraint — constraints beat instructions.
+- Only one Claude Code session open at a time in this repo — concurrent sessions conflict on settings.local.json.
+
+**Lessons learned:**
+- The harness drives agent behavior — if the agent reads files before running verify.sh, the harness isn't driving. Design tests where the agent genuinely doesn't know what's broken.
+- AGENTS.md ~100 lines is a real constraint, not a guideline. Feature detail belongs in docs/.
+- Wendy had to ask "what are we missing?" — and there was always something. Gap check and overstatement check added to AGENTS.md session flow so future sessions do this proactively.
+- Wendy's questions are questions, not criticisms. Added to AGENTS.md session flow.
+
+**Left off at:** verify.sh has Ollama check and structured output, compile PASS, 9 stubs failing (expected). Feature contract in docs/socratic_questioner_contract.md. Day 13: agent builds Socratic questioner using verify.sh as the feedback entry point. Protocol is in place but not yet re-tested.
+
+**Levels practiced:**
+- Level 4 — compounding: fresh session picked up Day 12 context without coaching; gap found and fixed
+- Level 6 step 5 — tighten: harness gap identified, protocol added as hard constraint
+
+---
+
 ### Day 11 ✅
 **Goal:** Test compounding (Level 4 validation) — fresh session, real task, no hand-holding
 
