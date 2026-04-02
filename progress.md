@@ -1,6 +1,6 @@
 # progress.md
 
-Last updated: 2026-04-01 (Day 12)
+Last updated: 2026-04-02 (Day 13)
 
 ## What works
 - BraindumpProcessor.process/1 — file path in, structured map out
@@ -21,19 +21,20 @@ Last updated: 2026-04-01 (Day 12)
 - Larger braindumps need receive_timeout: 300_000 (5 min) — currently hardcoded
 - BraindumpValidator exists but is not wired into the pipeline
 - FileIngestor has only read_file/1 — placeholder process_file/1 was removed on Day 8
-- verify.sh feedback loop protocol is in AGENTS.md but has not been re-tested with the protocol in place — Day 13 will be the real test
+- verify.sh feedback loop protocol is a text constraint, not mechanical — walk-away test (Day 13) showed the agent can bypass it and still produce passing tests. Harness needs mechanical enforcement (PreToolUse hook, Day 14).
 
 ## Deferred — revisit when triggered
 - **MCP:** Deferred Day 8 — no capability gap yet. Revisit when the agent needs to
   reach something it can't get to via the terminal (e.g., visual output, slide
   preview, external services). Details in docs/mcp_notes.md.
-- **AGENTS.md length:** 122 lines — check and trim at end of Day 13 if still over 100.
+- **AGENTS.md length:** Checked Day 13 — trimmed from 125 to 115. Accepted at 115.
 
 ## What's next
-- Day 13: Agent builds Socratic questioner — walk-away test. Agent reads contract, uses verify.sh as entry point, self-corrects from output.
-- Day 14: Evaluate what harness caught and missed. Tighten.
-- Day 15: Agent-Y adversarial review
-- Day 16: Re-evaluation checkpoint
+- Day 13.5 (standalone): uncertainty/confidence constraint for the agent
+- Day 14: Tighten harness — make "don't read files first" mechanical via PreToolUse hook on Read
+- Day 15: Agent builds Socratic questioner with tightened harness
+- Day 16: Agent-Y adversarial review
+- Day 17: Re-evaluation checkpoint
 - April 5: Socratic questioner ready for real talk prep use
 
 ### Socratic questioner (next feature)

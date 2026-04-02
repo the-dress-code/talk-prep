@@ -90,7 +90,7 @@ We are building features as Level 6 (harness engineering) rep cycles. Each rep:
 
 **Next feature: Socratic questioner** (Days 11-16)
 
-Harness design is complete (Days 11-12). Day 13: go straight to building.
+Harness design complete (Days 11-12). Walk-away test run (Day 13). Day 14: tighten harness before building — see Known issues in progress.md.
 Feature contract: **docs/socratic_questioner_contract.md** — read this before building.
 Test stubs: test/socratic_questioner_test.exs — 9 tests, all failing "not implemented."
 Skeleton module: lib/talk_prep/socratic_questioner.ex — implement the functions, run verify.sh, self-correct from output.

@@ -59,7 +59,8 @@ constraints and what the agent needs to know to write code.
   Left off at) as the source. Format: first line is "Day N: Agentic Engineering
   Learning Sprint" followed by a second line with the day's goal as a title. Then
   concise bullet points — what got done, what was learned. No markdown, no asterisks,
-  no formatting symbols. Use "Next:" instead of "Tomorrow:" for the closing item.
+  no hyphens, no bullet markers, no formatting symbols of any kind. Plain text lines only.
+  Use "Next:" instead of "Tomorrow:" for the closing item.
   Keep it tight. Manager knows about the sprint — no need to over-explain.
 
 ---
@@ -154,6 +155,42 @@ Day 12: Upgrade verify.sh into a feedback loop ✦ harness design done on Day 11
 ## Daily Log
 
 *Days 1-7 archived to docs/daily_log_days_1_7_archive.md — lessons are captured in current docs.*
+
+---
+
+### Day 13 ✅
+**Goal:** Walk-away test — evaluate whether the harness drives the agent to build the Socratic questioner autonomously, using verify.sh as the entry point.
+
+**Completed:**
+- Housekeeping before walk-away test:
+  - AGENTS.md session flow tightened: checklist is a handoff to Wendy; agent walks through steps one at a time and waits for go-ahead
+  - sprint_log.md: added checklist-from-Wendy's-POV rule; removed redundant behavioral rule (moved to AGENTS.md)
+  - DRY audit across AGENTS.md, sprint_log.md, progress.md, product_vision.md, human_guide.md — two real duplicates removed from AGENTS.md: "Known issues (Ollama/Qwen)" and "Code notes" (FileIngestor) — both already in progress.md
+  - socratic_questioner_contract.md: fixed interaction loop (added step 1 — user invokes command); added terminal markdown display rule
+  - AGENTS.md trimmed to 115 lines (was 125)
+- Walk-away test: fresh session, prompt `Run ./verify.sh first. Do not read source files yet.`
+  - Agent ran verify.sh first ✅
+  - Agent then read 5 source files before touching the failing module ❌ — violated the protocol
+  - Agent produced working code; all 11 tests passed
+  - Code discarded — Day 13 was about evaluating the harness, not shipping code
+- Session ran long; agent started making assumptions and contradicting documented decisions mid-session. Wendy caught it, stopped, and did a handoff to a fresh session for end-of-day docs. handoff_day13.md written as source of truth.
+- Learning doc written: learning/what_is_a_long_session.md
+- Day n.5 convention established as the systematic fix: housekeeping and meta sessions get their own session, separate from the main build session
+
+**Key decisions:**
+- Day 13.5 (standalone): work on uncertainty/confidence constraint for the agent
+- Day 14: make "don't read files first" mechanical — PreToolUse hook on Read that logs to a temp file. Hairy to implement cleanly; full session needed.
+
+**Lessons learned:**
+- verify.sh protocol is a text constraint, not mechanical. Agent can bypass it and still produce passing tests. Harness has no teeth here.
+- The walk-away test can't evaluate agent behavior if the only artifact is pass/fail. The harness needs to surface the path, not just the outcome.
+- Long sessions dilute context — agent started contradicting documented decisions. Wendy caught it and did a handoff rather than continuing. Day n.5 convention is the systematic solution.
+
+**Left off at:** Harness finding in hand. socratic_questioner.ex still stubs (9 tests failing "not implemented" — correct). Day 13.5: uncertainty/confidence constraint. Day 14: tighten harness, PreToolUse hook.
+
+**Levels practiced:**
+- Level 6 step 3 — walk-away test: executed for real; agent bypassed the protocol and still produced passing tests
+- Level 6 step 4 — evaluate: harness gap identified — text constraint with no mechanical enforcement
 
 ---
 
