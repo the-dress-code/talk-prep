@@ -40,6 +40,8 @@ constraints and what the agent needs to know to write code.
 - Follow the style of the Day 1 checklist exactly: opening line "Here's your Day N checklist:",
   horizontal rule, bold title with goal, plain `*` bullet steps (no bold, no sub-sections),
   stretch goal block, horizontal rule, one closing sentence, horizontal rule, timestamp.
+- Checklists are always written from Wendy's perspective — every bullet is something Wendy does. When the agent is involved, describe it as Wendy's instruction to the agent (e.g., "hand the agent the task," "open a fresh session and have it run verify.sh"). Never write bullets from the agent's POV.
+- After displaying the checklist, wait for Wendy's go-ahead before proceeding. Walk through each step one at a time — explain what it does and why before doing it. Wait for her go-ahead before moving to the next step.
 - Save the checklist as a markdown file in `checklists/day_N_checklist.md` and
   commit it to the repo.
 - Also display the checklist in the chat message so it can be copied directly

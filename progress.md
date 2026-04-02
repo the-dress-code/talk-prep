@@ -20,6 +20,7 @@ Last updated: 2026-04-01 (Day 12)
 - Topic labels use Qwen's phrasing instead of speaker's verbatim words — tolerated for now
 - Larger braindumps need receive_timeout: 300_000 (5 min) — currently hardcoded
 - BraindumpValidator exists but is not wired into the pipeline
+- FileIngestor has only read_file/1 — placeholder process_file/1 was removed on Day 8
 - verify.sh feedback loop protocol is in AGENTS.md but has not been re-tested with the protocol in place — Day 13 will be the real test
 
 ## Deferred — revisit when triggered

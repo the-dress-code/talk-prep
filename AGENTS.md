@@ -13,8 +13,8 @@ to determine what day of the sprint this is and what the plan calls for.
 Session flow:
 1. Read the three files above
 2. Determine what sprint day it is and what the plan says to do
-3. Generate the day's checklist (see sprint_log.md session conventions)
-4. Work through the day's tasks, doing real-time coaching callouts throughout
+3. Generate the day's checklist (see sprint_log.md session conventions). Present it to Wendy and wait for her go-ahead before proceeding.
+4. Work through the checklist one step at a time — explain what each step does and why before doing it, wait for Wendy's go-ahead, then execute. Do real-time coaching callouts throughout.
 5. End-of-day documentation — do all of the following before asking Wendy to confirm:
    - **sprint_log.md** — add today's log entry (goal, completed, key decisions, lessons learned, left off at, levels practiced). Do not overstate or abstract — write what actually happened.
    - **progress.md** — update "What works," "Known issues," "What's next." Ensure test status is accurate (e.g. if stubs are failing, say so).
@@ -113,12 +113,3 @@ BraindumpProcessor.process/1 returns:
 }
 ```
 
-## Known issues (Ollama/Qwen)
-- Topic labels tend to be Qwen's phrasing, not the speaker's verbatim words
-- needs_points currently always returns false
-- Output shape can vary between runs — Qwen is non-deterministic
-- Complex prompts require receive_timeout: 300_000 for larger inputs
-
-## Code notes
-- BraindumpValidator exists but is not wired into the pipeline yet.
-- FileIngestor has only read_file/1 — placeholder process_file/1 was removed on Day 8.

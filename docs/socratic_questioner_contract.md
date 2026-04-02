@@ -19,11 +19,14 @@ evidence ≠ details — a point can have sub-bullets and still be an unsupporte
 assertion. Requires a separate LLM call per topic/point to detect unsupported claims.
 
 ## Interaction loop
-1. Present claim + first question
-2. User answers
-3. LLM generates follow-up or pushback based on answer
-4. Repeat until user types `done` or `skip`
-5. Move to next claim automatically
+1. User invokes `mix socratic --claim "..."` with a single claim
+2. Terminal displays the claim and the first question in readable markdown
+3. User answers
+4. LLM generates follow-up or pushback based on answer, displayed in readable markdown
+5. Repeat until user types `done` or `skip`
+6. Move to next claim automatically
+
+Terminal output is formatted markdown throughout the session. JSON is the persistent artifact saved to disk — not what the user reads during the session.
 
 Exit signals:
 - `done` — save current claim's Q&A, move to next claim
