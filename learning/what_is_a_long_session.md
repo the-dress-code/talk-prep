@@ -29,3 +29,17 @@ format, walk-away test, meta discussion), several hours of work.
 - **Day n.5 sessions.** Housekeeping and meta work (fixing conventions,
   updating constraints) can live in their own session separate from the main
   build session. This keeps build sessions focused and shorter.
+
+# TLDR from day 13
+
+ What constitutes a "long" session?
+
+  I don't have exact token counts visible to you, but practical signals are:
+  - I start contradicting documented decisions
+  - I reason from assumption rather than from what I read
+  - I stop citing files and start asserting
+
+  This session is long — we've read ~8 files, had extensive back-and-forth, made
+  multiple edits. A rough heuristic: if a session has covered more than 2-3
+  distinct topics with multiple file reads each, it's getting long enough to be
+  careful.
