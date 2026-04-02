@@ -1,7 +1,7 @@
 defmodule TalkPrep.SocraticQuestioner do
   @moduledoc """
   Socratic questioner — questions unsupported claims in a braindump.
-  See AGENTS.md feature contract for full specification.
+  See AGENTS.md for feature contract pointer.
   """
 
   def build_first_question(_claim) do
