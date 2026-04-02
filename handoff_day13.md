@@ -52,6 +52,4 @@ of truth for end-of-day docs. Do not rely on conversation memory.
 ## Current state of repo
 - socratic_questioner.ex: stubs only (9 tests failing "not implemented") — correct
 - All pre-existing tests passing
-- Committed: housekeeping changes (see commit 7126045 and today's changes)
-- NOT committed yet: learning/what_is_a_long_session.md, this handoff note,
-  socratic_questioner.ex revert
+- All today's changes committed. Run `git log --oneline -10` for full detail.
