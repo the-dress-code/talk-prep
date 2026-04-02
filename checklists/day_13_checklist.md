@@ -7,6 +7,7 @@ Here's your Day 13 checklist:
 * Housekeeping: Update "rules" for format of daily checklist, explaining list items, audit .md files for bloat
 * Review docs/socratic_questioner_contract.md — confirm you're happy with the spec before the agent builds against it
 * Open a fresh session (separate window) and hand the agent this task: "Implement the Socratic questioner. Start with `./verify.sh`. Use it as your feedback loop. Do not read source files first."
+    - Updated prompt to "Run `./verify.sh` first. Do not read source files yet."
 * Step away — this is the walk-away test. Let it run.
 * Come back and evaluate: did the agent finish and verify, or surface a clear blocker? Was verify.sh the entry point, or did it read files first?
 
